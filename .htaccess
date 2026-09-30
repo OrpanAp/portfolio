@@ -1,0 +1,13 @@
+RewriteEngine On
+
+RewriteBase /dashboard/portfolio/public/
+
+# Don't rewrite existing files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+
+# Don't rewrite existing directories
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Send everything else to index.php
+RewriteRule ^ index.php [L]

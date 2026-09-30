@@ -1,0 +1,19 @@
+{
+  "name": "portfolio/personal-portfolio",
+  "description": "PHP 8.2 personal portfolio website with MySQL and admin panel",
+  "type": "project",
+  "require": {
+    "php": "^8.2",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}

@@ -1,0 +1,40 @@
+# Environment
+.env
+
+# Composer
+/vendor/
+
+# Uploaded files
+/public/uploads/*
+/public/uploads/cv/*
+/public/uploads/portfolio/*
+/public/uploads/thumbnails/*
+/public/projects/*
+
+# Keep upload directories
+!/public/uploads/
+!/public/uploads/cv/
+!/public/uploads/portfolio/
+!/public/uploads/thumbnails/
+!/public/projects/
+
+# Keep only .gitkeep files
+!/public/uploads/cv/.gitkeep
+!/public/uploads/portfolio/.gitkeep
+!/public/uploads/thumbnails/.gitkeep
+!/public/projects/.gitkeep
+
+# Logs
+/storage/logs/*
+/storage/logs/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# PHP temporary files
+*.log

@@ -1,0 +1,1045 @@
+/* =========================================================
+   Admin Layout
+   ========================================================= */
+
+.admin-layout {
+  min-height: 100vh;
+
+  display: flex;
+
+  background: #f4f6f8;
+}
+
+/* =========================================================
+   Sidebar
+   ========================================================= */
+
+.admin-sidebar {
+  width: 250px;
+
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #111827;
+}
+
+.admin-sidebar-header {
+  padding: 25px 20px;
+
+  border-bottom: 1px solid #374151;
+}
+
+.admin-logo {
+  color: #ffffff;
+
+  font-size: 1.25rem;
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.admin-navigation {
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px 12px;
+
+  gap: 5px;
+}
+
+.admin-nav-link {
+  display: block;
+
+  padding: 12px 14px;
+
+  border-radius: 8px;
+
+  color: #d1d5db;
+
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.admin-nav-link:hover {
+  background: #1f2937;
+
+  color: #ffffff;
+}
+
+.admin-sidebar-footer {
+  margin-top: auto;
+
+  padding: 15px 12px;
+
+  border-top: 1px solid #374151;
+}
+
+.admin-logout-link {
+  color: #fca5a5;
+}
+
+.admin-logout-link:hover {
+  color: #ffffff;
+}
+
+/* =========================================================
+   Main Area
+   ========================================================= */
+
+.admin-main {
+  flex: 1;
+
+  min-width: 0;
+}
+
+/* =========================================================
+   Topbar
+   ========================================================= */
+
+.admin-topbar {
+  min-height: 80px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 30px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-topbar h1 {
+  margin: 0;
+
+  font-size: 1.4rem;
+}
+
+.admin-user {
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  background: #f3f4f6;
+
+  color: #374151;
+
+  font-size: 0.9rem;
+}
+
+/* =========================================================
+   Admin Content
+   ========================================================= */
+
+.admin-content {
+  padding: 30px;
+}
+
+/* =========================================================
+   Dashboard
+   ========================================================= */
+
+.admin-page-header {
+  margin-bottom: 30px;
+}
+
+.admin-page-eyebrow {
+  margin: 0 0 8px;
+
+  color: #6b7280;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.admin-page-header h2 {
+  margin: 0 0 10px;
+
+  font-size: 2rem;
+}
+
+.admin-page-header p:last-child {
+  margin: 0;
+
+  color: #6b7280;
+}
+
+/* =========================================================
+   Dashboard Cards
+   ========================================================= */
+
+.admin-dashboard-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.admin-dashboard-card {
+  padding: 25px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.admin-dashboard-card h3 {
+  margin: 0 0 10px;
+
+  font-size: 1.25rem;
+}
+
+.admin-dashboard-card p {
+  margin: 0 0 20px;
+
+  color: #6b7280;
+
+  line-height: 1.6;
+}
+
+.admin-card-button {
+  display: inline-block;
+
+  padding: 10px 16px;
+
+  border-radius: 7px;
+
+  background: #111827;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 0.9rem;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-card-button:hover {
+  background: #374151;
+
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   Dark Theme
+   ========================================================= */
+
+.dark-theme .admin-layout {
+  background: #0f172a;
+}
+
+.dark-theme .admin-topbar {
+  background: #111827;
+
+  border-color: #374151;
+
+  color: #ffffff;
+}
+
+.dark-theme .admin-user {
+  background: #1f2937;
+
+  color: #d1d5db;
+}
+
+.dark-theme .admin-page-header h2 {
+  color: #ffffff;
+}
+
+.dark-theme .admin-page-header p:last-child {
+  color: #9ca3af;
+}
+
+.dark-theme .admin-dashboard-card {
+  background: #111827;
+
+  border-color: #374151;
+
+  color: #ffffff;
+}
+
+.dark-theme .admin-dashboard-card p {
+  color: #9ca3af;
+}
+
+.dark-theme .admin-card-button {
+  background: #374151;
+}
+
+.dark-theme .admin-card-button:hover {
+  background: #4b5563;
+}
+
+/* =========================================================
+   Admin Login
+   ========================================================= */
+
+.admin-login-page {
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background: #f4f6f8;
+}
+
+.admin-login-box {
+  width: 100%;
+  max-width: 430px;
+
+  padding: 40px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.admin-login-eyebrow {
+  margin: 0 0 8px;
+
+  color: #6b7280;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.admin-login-box h1 {
+  margin: 0 0 30px;
+
+  color: #111827;
+
+  font-size: 2rem;
+}
+
+/* =========================================================
+   Login Form
+   ========================================================= */
+
+.admin-login-box form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.form-group label {
+  color: #374151;
+
+  font-size: 0.95rem;
+
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 12px 14px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  font-family: inherit;
+
+  font-size: 1rem;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #4b5563;
+
+  box-shadow: 0 0 0 3px rgba(75, 85, 99, 0.12);
+}
+
+/* =========================================================
+   Login Button
+   ========================================================= */
+
+.admin-login-button {
+  width: 100%;
+
+  padding: 13px 18px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #111827;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 1rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-login-button:hover {
+  background: #374151;
+
+  transform: translateY(-1px);
+}
+
+.admin-login-button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   Login Error
+   ========================================================= */
+
+.admin-login-error {
+  margin-bottom: 20px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 8px;
+
+  background: #fef2f2;
+
+  color: #b91c1c;
+
+  font-size: 0.9rem;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Admin Login - Dark Theme
+   ========================================================= */
+
+.dark-theme .admin-login-page {
+  background: #0f172a;
+}
+
+.dark-theme .admin-login-box {
+  background: #111827;
+
+  border-color: #374151;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .admin-login-box h1 {
+  color: #ffffff;
+}
+
+.dark-theme .admin-login-eyebrow {
+  color: #9ca3af;
+}
+
+.dark-theme .form-group label {
+  color: #d1d5db;
+}
+
+.dark-theme .form-group input {
+  border-color: #4b5563;
+
+  background: #1f2937;
+
+  color: #ffffff;
+}
+
+.dark-theme .form-group input:focus {
+  border-color: #9ca3af;
+
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.15);
+}
+
+.dark-theme .admin-login-error {
+  border-color: #7f1d1d;
+
+  background: #450a0a;
+
+  color: #fca5a5;
+}
+
+.dark-theme .admin-login-button {
+  background: #374151;
+}
+
+.dark-theme .admin-login-button:hover {
+  background: #4b5563;
+}
+
+/* =========================================================
+   Category Management
+   ========================================================= */
+
+.admin-page-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+/* =========================================================
+   Empty State
+   ========================================================= */
+
+.admin-empty-state {
+  padding: 50px 30px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+}
+
+.admin-empty-state h3 {
+  margin: 0 0 10px;
+
+  font-size: 1.4rem;
+}
+
+.admin-empty-state p {
+  margin: 0 0 20px;
+
+  color: #6b7280;
+}
+
+/* =========================================================
+   Table
+   ========================================================= */
+
+.admin-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+}
+
+.admin-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  min-width: 700px;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 15px 18px;
+
+  text-align: left;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table th {
+  background: #f9fafb;
+
+  color: #374151;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
+}
+
+.admin-table td {
+  color: #374151;
+
+  font-size: 0.95rem;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.admin-table code {
+  padding: 4px 7px;
+
+  border-radius: 5px;
+
+  background: #f3f4f6;
+
+  color: #374151;
+
+  font-size: 0.85rem;
+}
+
+/* =========================================================
+   Table Actions
+   ========================================================= */
+
+.admin-table-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.admin-table-actions form {
+  margin: 0;
+}
+
+.admin-action-button {
+  display: inline-block;
+
+  padding: 7px 11px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: #e5e7eb;
+
+  color: #374151;
+
+  font-family: inherit;
+
+  font-size: 0.85rem;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.admin-action-button:hover {
+  background: #d1d5db;
+
+  color: #111827;
+}
+
+.admin-delete-button {
+  background: #fee2e2;
+
+  color: #b91c1c;
+}
+
+.admin-delete-button:hover {
+  background: #fecaca;
+
+  color: #991b1b;
+}
+
+/* =========================================================
+   Dark Theme
+   ========================================================= */
+
+.dark-theme .admin-empty-state {
+  background: #111827;
+
+  border-color: #374151;
+
+  color: #ffffff;
+}
+
+.dark-theme .admin-empty-state p {
+  color: #9ca3af;
+}
+
+.dark-theme .admin-table-wrapper {
+  background: #111827;
+
+  border-color: #374151;
+}
+
+.dark-theme .admin-table th {
+  background: #1f2937;
+
+  color: #d1d5db;
+
+  border-color: #374151;
+}
+
+.dark-theme .admin-table td {
+  color: #d1d5db;
+
+  border-color: #374151;
+}
+
+.dark-theme .admin-table tbody tr:hover {
+  background: #1f2937;
+}
+
+.dark-theme .admin-table code {
+  background: #1f2937;
+
+  color: #d1d5db;
+}
+
+.dark-theme .admin-action-button {
+  background: #374151;
+
+  color: #e5e7eb;
+}
+
+.dark-theme .admin-action-button:hover {
+  background: #4b5563;
+
+  color: #ffffff;
+}
+
+.dark-theme .admin-delete-button {
+  background: #451a1a;
+
+  color: #fca5a5;
+}
+
+.dark-theme .admin-delete-button:hover {
+  background: #7f1d1d;
+
+  color: #ffffff;
+}
+
+/* =========================================================
+   Admin Forms
+   ========================================================= */
+
+.admin-form-card {
+  max-width: 700px;
+
+  padding: 30px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.admin-form-group {
+  margin-bottom: 22px;
+}
+
+.admin-form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #374151;
+
+  font-size: 0.95rem;
+
+  font-weight: 600;
+}
+
+.admin-form-group input,
+.admin-form-group textarea,
+.admin-form-group select {
+  width: 100%;
+
+  padding: 11px 13px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  font-family: inherit;
+
+  font-size: 0.95rem;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-form-group input:focus,
+.admin-form-group textarea:focus,
+.admin-form-group select:focus {
+  border-color: #6b7280;
+
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.12);
+}
+
+.admin-form-group small {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #6b7280;
+
+  font-size: 0.82rem;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Form Error
+   ========================================================= */
+
+.admin-form-error {
+  max-width: 700px;
+
+  margin-bottom: 20px;
+
+  padding: 12px 15px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 7px;
+
+  background: #fef2f2;
+
+  color: #b91c1c;
+}
+
+/* =========================================================
+   Form Actions
+   ========================================================= */
+
+.admin-form-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 30px;
+}
+
+.admin-cancel-button {
+  display: inline-block;
+
+  padding: 10px 16px;
+
+  border-radius: 7px;
+
+  background: #e5e7eb;
+
+  color: #374151;
+
+  text-decoration: none;
+
+  font-size: 0.9rem;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.admin-cancel-button:hover {
+  background: #d1d5db;
+
+  color: #111827;
+}
+
+/* =========================================================
+   Dark Theme Forms
+   ========================================================= */
+
+.dark-theme .admin-form-card {
+  background: #111827;
+
+  border-color: #374151;
+}
+
+.dark-theme .admin-form-group label {
+  color: #d1d5db;
+}
+
+.dark-theme .admin-form-group input,
+.dark-theme .admin-form-group textarea,
+.dark-theme .admin-form-group select {
+  border-color: #4b5563;
+
+  background: #1f2937;
+
+  color: #ffffff;
+}
+
+.dark-theme .admin-form-group input:focus,
+.dark-theme .admin-form-group textarea:focus,
+.dark-theme .admin-form-group select:focus {
+  border-color: #9ca3af;
+
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.12);
+}
+
+.dark-theme .admin-form-group small {
+  color: #9ca3af;
+}
+
+.dark-theme .admin-form-error {
+  border-color: #7f1d1d;
+
+  background: #451a1a;
+
+  color: #fca5a5;
+}
+
+.dark-theme .admin-cancel-button {
+  background: #374151;
+
+  color: #e5e7eb;
+}
+
+.dark-theme .admin-cancel-button:hover {
+  background: #4b5563;
+
+  color: #ffffff;
+}
+
+/* =========================================================
+   Technology Checkbox Grid
+   ========================================================= */
+
+.admin-form-group .admin-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+/* Override the normal form label */
+.admin-form-group .admin-checkbox-grid .admin-checkbox-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+
+  width: auto !important;
+  min-height: 20px;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  gap: 8px;
+
+  color: #374151;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* Override the normal input styling */
+.admin-form-group
+  .admin-checkbox-grid
+  .admin-checkbox-item
+  input[type="checkbox"] {
+  width: 13px !important;
+  min-width: 13px !important;
+  max-width: 13px !important;
+
+  height: 13px !important;
+  min-height: 13px !important;
+  max-height: 13px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  flex: 0 0 13px !important;
+
+  border: initial;
+  border-radius: initial;
+
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+
+  vertical-align: middle;
+}
+
+/* Technology name */
+.admin-form-group .admin-checkbox-grid .admin-checkbox-item span {
+  display: inline-block;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  line-height: 20px;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+/* Dark theme */
+.dark-theme .admin-form-group .admin-checkbox-grid .admin-checkbox-item {
+  color: #d1d5db;
+}

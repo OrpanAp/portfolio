@@ -1,0 +1,198 @@
+@media (max-width: 600px) {
+  .portfolio-filters {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .portfolio-filter-actions {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .portfolio-filter-button,
+  .portfolio-filter-reset {
+    flex: 1;
+  }
+
+  .portfolio-pagination {
+    gap: 6px;
+  }
+
+  .portfolio-pagination a {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 9px;
+  }
+
+  .portfolio-live-preview-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .portfolio-preview-open {
+    width: 100%;
+  }
+
+  .portfolio-live-preview-frame {
+    height: 500px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 20px 0;
+  }
+
+  .navbar-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  main {
+    padding: 35px 0;
+  }
+
+  .home-hero {
+    min-height: 60vh;
+  }
+
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-intro {
+    font-size: 1rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+
+    text-align: center;
+  }
+
+  .profile-image {
+    width: 130px;
+    height: 130px;
+  }
+
+  .profile-section {
+    padding: 30px 0;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-thumbnail,
+  .portfolio-thumbnail-placeholder {
+    height: 200px;
+  }
+}
+
+/* =========================================================
+   Admin Responsive
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .admin-sidebar {
+    width: 210px;
+  }
+
+  .admin-content {
+    padding: 25px;
+  }
+
+  .admin-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+
+    min-height: auto;
+  }
+
+  .admin-sidebar-header {
+    text-align: center;
+  }
+
+  .admin-navigation {
+    flex-direction: row;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+  }
+
+  .admin-sidebar-footer {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+  }
+
+  .admin-topbar {
+    padding: 20px;
+  }
+
+  .admin-content {
+    padding: 20px;
+  }
+
+  .admin-page-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .cv-page {
+    width: 94%;
+    margin: 25px auto 40px;
+  }
+
+  .cv-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .cv-header h1 {
+    font-size: 28px;
+  }
+
+  .cv-download-button {
+    width: 100%;
+  }
+
+  .cv-preview {
+    height: 75vh;
+    min-height: 500px;
+    border-radius: 8px;
+  }
+
+  .cv-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .cv-actions a {
+    width: 100%;
+  }
+
+  .portfolio-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portfolio-filter-actions {
+    grid-column: 1 / -1;
+  }
+}
