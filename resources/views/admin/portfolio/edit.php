@@ -274,6 +274,21 @@
         </div>
 
         <div class="admin-form-group">
+            <label for="thumbnail">Replace Portfolio Thumbnail</label>
+
+            <input
+                type="file"
+                id="thumbnail"
+                name="thumbnail"
+                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+
+            <small>
+                JPG, JPEG, PNG, or WebP. Maximum 5 MB.
+                Leave empty to keep the current thumbnail.
+            </small>
+        </div>
+
+        <div class="admin-form-group">
 
             <label for="sort_order">
                 Sort Order

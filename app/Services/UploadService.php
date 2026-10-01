@@ -102,24 +102,10 @@ class UploadService
         $zip->close();
 
         /*
-|--------------------------------------------------------------------------
-| Flatten Single Root Directory
-|--------------------------------------------------------------------------
-|
-| Many ZIP files contain their entire project inside
-| one folder named after the ZIP file.
-|
-| Example:
-|
-| project.zip
-| └── project/
-|     ├── index.html
-|     └── css/
-|
-| We move the contents of that single root folder
-| directly into the project folder.
-|
-*/
+        |--------------------------------------------------------------------------
+        | Flatten Single Root Directory
+        |--------------------------------------------------------------------------
+        */
 
         $items = scandir($projectPath);
 
@@ -190,8 +176,66 @@ class UploadService
         }
 
         return $projectFolder;
+    }
 
-        return $projectFolder;
+    /**
+     * Upload a portfolio thumbnail.
+     *
+     * Returns the public relative path.
+     */
+    public function uploadThumbnail(
+        array $file,
+        string $thumbnailPath,
+        int $maxFileSize = 5242880
+    ): string {
+        $this->validateThumbnailUpload(
+            $file,
+            $maxFileSize
+        );
+
+        if (!is_dir($thumbnailPath)) {
+            if (!mkdir(
+                $thumbnailPath,
+                0755,
+                true
+            ) && !is_dir($thumbnailPath)) {
+                throw new RuntimeException(
+                    'Unable to create the thumbnails directory.'
+                );
+            }
+        }
+
+        $extension = strtolower(
+            pathinfo(
+                $file['name'],
+                PATHINFO_EXTENSION
+            )
+        );
+
+        $fileName = 'thumb_'
+            . bin2hex(
+                random_bytes(16)
+            )
+            . '.'
+            . $extension;
+
+        $destination = rtrim(
+            $thumbnailPath,
+            DIRECTORY_SEPARATOR
+        )
+            . DIRECTORY_SEPARATOR
+            . $fileName;
+
+        if (!move_uploaded_file(
+            $file['tmp_name'],
+            $destination
+        )) {
+            throw new RuntimeException(
+                'Unable to save the thumbnail.'
+            );
+        }
+
+        return 'uploads/thumbnails/' . $fileName;
     }
 
     public function removeProject(
@@ -292,6 +336,121 @@ class UploadService
         if ($extension !== 'zip') {
             throw new RuntimeException(
                 'Only ZIP files are allowed.'
+            );
+        }
+    }
+
+    /**
+     * Validate the uploaded thumbnail.
+     */
+    private function validateThumbnailUpload(
+        array $file,
+        int $maxFileSize
+    ): void {
+        if (
+            !isset(
+                $file['error'],
+                $file['tmp_name'],
+                $file['size'],
+                $file['name']
+            )
+        ) {
+            throw new RuntimeException(
+                'Invalid thumbnail upload data.'
+            );
+        }
+
+        if (
+            (int) $file['error']
+            !== UPLOAD_ERR_OK
+        ) {
+            throw new RuntimeException(
+                $this->uploadErrorMessage(
+                    (int) $file['error']
+                )
+            );
+        }
+
+        if (
+            !is_uploaded_file(
+                $file['tmp_name']
+            )
+        ) {
+            throw new RuntimeException(
+                'Invalid uploaded thumbnail.'
+            );
+        }
+
+        if (
+            (int) $file['size']
+            <= 0
+        ) {
+            throw new RuntimeException(
+                'The uploaded thumbnail is empty.'
+            );
+        }
+
+        if (
+            (int) $file['size']
+            > $maxFileSize
+        ) {
+            throw new RuntimeException(
+                'The thumbnail file is too large.'
+            );
+        }
+
+        $extension = strtolower(
+            pathinfo(
+                $file['name'],
+                PATHINFO_EXTENSION
+            )
+        );
+
+        $allowedExtensions = [
+            'jpg',
+            'jpeg',
+            'png',
+            'webp',
+        ];
+
+        if (
+            !in_array(
+                $extension,
+                $allowedExtensions,
+                true
+            )
+        ) {
+            throw new RuntimeException(
+                'Only JPG, JPEG, PNG, and WebP thumbnails are allowed.'
+            );
+        }
+
+        $imageInfo = @getimagesize(
+            $file['tmp_name']
+        );
+
+        if ($imageInfo === false) {
+            throw new RuntimeException(
+                'The uploaded thumbnail is not a valid image.'
+            );
+        }
+
+        $allowedMimeTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+        ];
+
+        if (
+            !isset($imageInfo['mime'])
+            || !in_array(
+                $imageInfo['mime'],
+                $allowedMimeTypes,
+                true
+            )
+        ) {
+            throw new RuntimeException(
+                'The uploaded thumbnail format is not supported.'
             );
         }
     }

@@ -63,15 +63,15 @@
         </header>
 
         <?php if (!empty($portfolio['thumbnail'])): ?>
-
             <div class="portfolio-detail-thumbnail">
-
                 <img
-                    src="<?= htmlspecialchars($portfolio['thumbnail']) ?>"
+                    src="<?= htmlspecialchars(
+                                rtrim($appUrl, '/')
+                                    . '/'
+                                    . ltrim($portfolio['thumbnail'], '/')
+                            ) ?>"
                     alt="<?= htmlspecialchars($portfolio['title']) ?>">
-
             </div>
-
         <?php endif; ?>
 
         <div class="portfolio-detail-info">
