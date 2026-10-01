@@ -74,7 +74,8 @@ class PortfolioController
         $data = $this->collectFormData();
 
         $error = $this->validatePortfolio(
-            $data
+            $data,
+            true
         );
 
         if ($error !== null) {
@@ -127,6 +128,23 @@ class PortfolioController
                     $data['entry_path'] !== ''
                     ? $data['entry_path']
                     : 'index.html';
+
+                $entryFile =
+                    __DIR__
+                    . '/../../../public/projects/'
+                    . $projectFolder
+                    . '/'
+                    . ltrim(
+                        $data['entry_path'],
+                        '/'
+                    );
+
+                if (!is_file($entryFile)) {
+                    throw new \RuntimeException(
+                        'The selected entry file does not exist in the uploaded project: '
+                            . $data['entry_path']
+                    );
+                }
             }
 
             if (
@@ -234,6 +252,7 @@ class PortfolioController
         $uploadedProjectFolder = null;
         $oldThumbnail = null;
         $uploadedThumbnail = null;
+        $entryPathError = null;
 
         $portfolioId = (int) $id;
 
@@ -347,6 +366,64 @@ class PortfolioController
                     $data['entry_path'] !== ''
                     ? $data['entry_path']
                     : 'index.html';
+
+                $entryFile =
+                    __DIR__
+                    . '/../../../public/projects/'
+                    . $projectFolder
+                    . '/'
+                    . ltrim(
+                        $data['entry_path'],
+                        '/'
+                    );
+
+                if (!is_file($entryFile)) {
+                    throw new \RuntimeException(
+                        'The selected entry file does not exist in the uploaded project: '
+                            . $data['entry_path']
+                    );
+                }
+            }
+
+
+
+            if (
+                $data['project_type'] === 'upload' &&
+                $uploadedProjectFolder === null &&
+                $oldProjectFolder !== null &&
+                $oldProjectFolder !== ''
+            ) {
+                $entryPath =
+                    $data['entry_path'] !== null &&
+                    $data['entry_path'] !== ''
+                    ? $data['entry_path']
+                    : 'index.html';
+
+                $entryFile =
+                    __DIR__
+                    . '/../../../public/projects/'
+                    . $oldProjectFolder
+                    . '/'
+                    . ltrim(
+                        $entryPath,
+                        '/'
+                    );
+
+                if (!is_file($entryFile)) {
+                    $entryPathError =
+                        'The selected entry file does not exist in the existing project: '
+                        . $entryPath;
+                }
+            }
+
+            if ($entryPathError !== null) {
+                $this->showEditError(
+                    $entryPathError,
+                    $portfolio,
+                    $data
+                );
+
+                return;
             }
 
             $this->portfolioRepository->update(
@@ -591,7 +668,8 @@ class PortfolioController
     }
 
     private function validatePortfolio(
-        array $data
+        array $data,
+        bool $isUpdate = false
     ): ?string {
         if ($data['title'] === '') {
             return 'Portfolio title is required.';
@@ -650,7 +728,10 @@ class PortfolioController
 
         if ($data['project_type'] === 'upload') {
 
-            if ($data['project_zip'] === null) {
+            if (
+                !$isUpdate &&
+                $data['project_zip'] === null
+            ) {
                 return 'Please upload a project ZIP file.';
             }
 

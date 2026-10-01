@@ -254,6 +254,13 @@
 
         </div>
 
+        <input
+            type="hidden"
+            name="project_path"
+            value="<?= htmlspecialchars(
+                        $portfolio['project_path'] ?? ''
+                    ) ?>">
+
         <div class="admin-form-group">
 
             <label for="project_zip">
