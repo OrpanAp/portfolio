@@ -789,10 +789,11 @@ $basePath = rtrim(
 
 if (
     $basePath !== '' &&
-    str_starts_with(
+    strncasecmp(
         $requestPath,
-        $basePath
-    )
+        $basePath,
+        strlen($basePath)
+    ) === 0
 ) {
     $requestPath = substr(
         $requestPath,

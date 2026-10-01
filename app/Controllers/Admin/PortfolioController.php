@@ -539,18 +539,46 @@ class PortfolioController
         }
 
         try {
-
             $this->portfolioRepository->delete(
                 $portfolioId
             );
         } catch (PDOException $e) {
-
             $this->response->send(
                 'Unable to delete the portfolio item.',
                 409
             );
 
             return;
+        }
+
+        if (
+            ($portfolio['project_type'] ?? null) === 'upload' &&
+            is_string($portfolio['project_path'] ?? null) &&
+            $portfolio['project_path'] !== ''
+        ) {
+            try {
+                $this->uploadService->removeProject(
+                    $portfolio['project_path']
+                );
+            } catch (\Throwable $e) {
+                // Keep the database deletion successful.
+            }
+        }
+
+        $thumbnail = $portfolio['thumbnail'] ?? null;
+
+        if (is_string($thumbnail) && $thumbnail !== '') {
+            $thumbnailFile =
+                __DIR__
+                . '/../../../public/'
+                . ltrim(
+                    $thumbnail,
+                    '/'
+                );
+
+            if (is_file($thumbnailFile)) {
+                @unlink($thumbnailFile);
+            }
         }
 
         $this->response->redirect(
