@@ -9,6 +9,12 @@ use ZipArchive;
 
 class UploadService
 {
+    private const MAX_ARCHIVE_ENTRIES = 5000;
+
+    private const MAX_ARCHIVE_FILE_SIZE = 104857600;
+
+    private const MAX_ARCHIVE_TOTAL_SIZE = 524288000;
+
     public function __construct(
         private string $projectsPath,
         private int $maxFileSize = 52428800
@@ -461,6 +467,14 @@ class UploadService
     private function isSafeArchive(
         ZipArchive $zip
     ): bool {
+        if (
+            $zip->numFiles > self::MAX_ARCHIVE_ENTRIES
+        ) {
+            return false;
+        }
+
+        $totalSize = 0;
+
         for (
             $index = 0;
             $index < $zip->numFiles;
@@ -497,6 +511,37 @@ class UploadService
                     '#(^|/)\.\.?(/|$)#',
                     $entryName
                 )
+            ) {
+                return false;
+            }
+
+            $entry = $zip->statIndex(
+                $index
+            );
+
+            if ($entry === false) {
+                return false;
+            }
+
+            $entrySize = $entry['size'] ?? null;
+
+            if (
+                !is_int($entrySize) ||
+                $entrySize < 0
+            ) {
+                return false;
+            }
+
+            if (
+                $entrySize > self::MAX_ARCHIVE_FILE_SIZE
+            ) {
+                return false;
+            }
+
+            $totalSize += $entrySize;
+
+            if (
+                $totalSize > self::MAX_ARCHIVE_TOTAL_SIZE
             ) {
                 return false;
             }
