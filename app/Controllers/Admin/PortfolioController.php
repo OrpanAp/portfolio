@@ -782,8 +782,12 @@ class PortfolioController
         if ($data['project_type'] === 'upload') {
 
             if (
-                !$isUpdate &&
-                $data['project_zip'] === null
+                $data['project_zip'] === null &&
+                (
+                    !$isUpdate ||
+                    $data['project_path'] === null ||
+                    $data['project_path'] === ''
+                )
             ) {
                 return 'Please upload a project ZIP file.';
             }
