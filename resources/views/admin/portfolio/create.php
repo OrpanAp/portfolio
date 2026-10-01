@@ -275,6 +275,19 @@
 
         </div>
 
+        <div class="admin-form-group">
+            <label for="thumbnail">Portfolio Thumbnail</label>
+
+            <input
+                type="file"
+                id="thumbnail"
+                name="thumbnail"
+                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+
+            <small>
+                JPG, JPEG, PNG, or WebP. Maximum 5 MB.
+            </small>
+        </div>
 
         <div class="admin-form-group">
 

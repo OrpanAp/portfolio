@@ -129,6 +129,18 @@ class PortfolioController
                     : 'index.html';
             }
 
+            if (
+                $data['thumbnail_file'] !== null &&
+                ($data['thumbnail_file']['error'] ?? UPLOAD_ERR_NO_FILE)
+                !== UPLOAD_ERR_NO_FILE
+            ) {
+                $data['thumbnail'] =
+                    $this->uploadService->uploadThumbnail(
+                        $data['thumbnail_file'],
+                        __DIR__ . '/../../../public/uploads/thumbnails'
+                    );
+            }
+
             $this->portfolioRepository->create(
                 $data['category_id'],
                 $data['title'],
@@ -220,6 +232,8 @@ class PortfolioController
         $oldProjectFolder = null;
         $newProjectFolder = null;
         $uploadedProjectFolder = null;
+        $oldThumbnail = null;
+        $uploadedThumbnail = null;
 
         $portfolioId = (int) $id;
 
@@ -246,6 +260,10 @@ class PortfolioController
         }
 
         $data = $this->collectFormData();
+
+        $oldThumbnail = $portfolio['thumbnail'] ?? null;
+
+        $data['thumbnail'] = $oldThumbnail;
 
         $error = $this->validatePortfolio(
             $data
@@ -277,6 +295,20 @@ class PortfolioController
         }
 
         try {
+
+            if (
+                $data['thumbnail_file'] !== null &&
+                ($data['thumbnail_file']['error'] ?? UPLOAD_ERR_NO_FILE)
+                !== UPLOAD_ERR_NO_FILE
+            ) {
+                $data['thumbnail'] =
+                    $this->uploadService->uploadThumbnail(
+                        $data['thumbnail_file'],
+                        __DIR__ . '/../../../public/uploads/thumbnails'
+                    );
+
+                $uploadedThumbnail = $data['thumbnail'];
+            }
 
             if (
                 $data['project_type'] === 'upload' &&
@@ -345,6 +377,20 @@ class PortfolioController
                 }
             }
 
+            if ($uploadedThumbnail !== null) {
+                $thumbnailFile =
+                    __DIR__
+                    . '/../../../public/'
+                    . ltrim(
+                        $uploadedThumbnail,
+                        '/'
+                    );
+
+                if (is_file($thumbnailFile)) {
+                    @unlink($thumbnailFile);
+                }
+            }
+
             $this->showEditError(
                 'Unable to update the portfolio item.',
                 $portfolio,
@@ -355,6 +401,25 @@ class PortfolioController
         }
 
         if (
+            $uploadedThumbnail !== null &&
+            $oldThumbnail !== null &&
+            $oldThumbnail !== $uploadedThumbnail
+        ) {
+            $oldThumbnailFile =
+                __DIR__
+                . '/../../../public/'
+                . ltrim(
+                    $oldThumbnail,
+                    '/'
+                );
+
+            if (is_file($oldThumbnailFile)) {
+                @unlink($oldThumbnailFile);
+            }
+        }
+
+        if (
+
             $oldProjectFolder !== null &&
             (
                 $newProjectFolder === null ||
@@ -495,12 +560,15 @@ class PortfolioController
 
         $projectZip = $_FILES['project_zip'] ?? null;
 
+        $thumbnail = $_FILES['thumbnail'] ?? null;
+
         return [
             'category_id' => $categoryId,
             'title' => $title,
             'slug' => $slug,
             'description' => $description,
             'thumbnail' => null,
+            'thumbnail_file' => $thumbnail,
             'project_type' => $projectType,
             'project_path' =>
             $projectPath !== ''
