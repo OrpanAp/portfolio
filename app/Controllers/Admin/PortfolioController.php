@@ -752,6 +752,25 @@ class PortfolioController
             ) {
                 return 'Please enter a valid project URL.';
             }
+
+            $scheme = parse_url(
+                $data['external_url'],
+                PHP_URL_SCHEME
+            );
+
+            if (
+                !is_string($scheme) ||
+                !in_array(
+                    strtolower($scheme),
+                    [
+                        'http',
+                        'https',
+                    ],
+                    true
+                )
+            ) {
+                return 'Project URL must use HTTP or HTTPS.';
+            }
         }
 
         if ($data['project_type'] === 'upload') {
