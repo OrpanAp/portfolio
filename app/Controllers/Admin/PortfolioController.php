@@ -280,6 +280,12 @@ class PortfolioController
 
         $data = $this->collectFormData();
 
+        if ($data['project_type'] === 'upload') {
+            $data['project_path'] = $oldProjectFolder;
+        } else {
+            $data['project_path'] = null;
+        }
+
         $oldThumbnail = $portfolio['thumbnail'] ?? null;
 
         $data['thumbnail'] = $oldThumbnail;
