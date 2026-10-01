@@ -61,7 +61,16 @@ CREATE TABLE portfolios (
      * For uploaded projects:
      *
      * Example:
-     * projects/my-project/index.html
+     * projects/my-project
+     *
+     * For URL projects this can remain NULL.
+     */
+    project_path VARCHAR(500) DEFAULT NULL,
+    /*
+     * For uploaded projects:
+     *
+     * Example:
+     * index.html
      *
      * For URL projects this can remain NULL.
      */
