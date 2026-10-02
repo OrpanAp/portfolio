@@ -61,4 +61,33 @@ class UserRepository
 
         return $user ?: null;
     }
+
+    public function createAdmin(
+        string $username,
+        string $email,
+        string $passwordHash
+    ): int {
+        $statement = $this->database->prepare(
+            'INSERT INTO users (
+                username,
+                email,
+                password,
+                role
+             ) VALUES (
+                :username,
+                :email,
+                :password,
+                :role
+             )'
+        );
+
+        $statement->execute([
+            'username' => $username,
+            'email' => $email,
+            'password' => $passwordHash,
+            'role' => 'admin',
+        ]);
+
+        return (int) $this->database->lastInsertId();
+    }
 }
