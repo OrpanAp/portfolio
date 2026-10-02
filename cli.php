@@ -27,7 +27,12 @@ switch ($command) {
         echo "Portfolio CLI\n";
         echo "\n";
         echo "Available commands:\n";
-        echo "  help    Show this help message\n";
+        echo "  help          Show this help message\n";
+        echo "  admin:create  Create the administrator account\n";
+        exit(0);
+
+    case 'admin:create':
+        echo "Admin creation command selected.\n";
         exit(0);
 
     default:
