@@ -47,6 +47,14 @@ $database = new App\Core\Database(
     $dbConfig['password']
 );
 
+$migrationRunner = new App\Core\MigrationRunner(
+    $database->connection(),
+    new App\Repositories\MigrationRepository(
+        $database->connection()
+    ),
+    __DIR__ . '/database/migrations'
+);
+
 $command = $argv[1] ?? null;
 
 if ($command === null) {
@@ -65,6 +73,8 @@ switch ($command) {
         echo "  admin:list    List administrator accounts\n";
         echo "  admin:password  Change the administrator password\n";
         echo "  admin:reset-password  Reset the administrator password\n";
+        echo "  migrate       Run pending database migrations\n";
+        echo "  migrate:status  Show migration status\n";
         exit(0);
 
     case 'admin:create':
@@ -341,6 +351,83 @@ switch ($command) {
                     . $exception->getMessage()
                     . "\n"
             );
+            exit(1);
+        }
+
+        exit(0);
+
+    case 'migrate':
+        try {
+            $executed = $migrationRunner->migrate();
+
+            if ($executed === 0) {
+                echo "No pending migrations.\n";
+            } else {
+                echo "Migrations executed: {$executed}\n";
+            }
+        } catch (Throwable $exception) {
+            fwrite(
+                STDERR,
+                "Migration failed: "
+                    . $exception->getMessage()
+                    . "\n"
+            );
+
+            exit(1);
+        }
+
+        exit(0);
+
+    case 'migrate:status':
+        $migrationRepository = new App\Repositories\MigrationRepository(
+            $database->connection()
+        );
+
+        $migrationRepository->ensureTable();
+
+        $migrationFiles = $migrationRepository->migrationFiles(
+            __DIR__ . '/database/migrations'
+        );
+
+        if ($migrationFiles === []) {
+            echo "No migration files found.\n";
+            exit(0);
+        }
+
+        foreach ($migrationFiles as $file) {
+            $migrationName = pathinfo(
+                $file,
+                PATHINFO_FILENAME
+            );
+
+            $status = $migrationRepository->exists(
+                $migrationName
+            )
+                ? 'Applied'
+                : 'Pending';
+
+            echo "{$status}: {$migrationName}\n";
+        }
+
+        exit(0);
+
+    case 'migrate:rollback':
+        try {
+            $rolledBack = $migrationRunner->rollback();
+
+            if ($rolledBack === 0) {
+                echo "No migrations to roll back.\n";
+            } else {
+                echo "Migrations rolled back: {$rolledBack}\n";
+            }
+        } catch (Throwable $exception) {
+            fwrite(
+                STDERR,
+                "Migration rollback failed: "
+                    . $exception->getMessage()
+                    . "\n"
+            );
+
             exit(1);
         }
 
