@@ -2,11 +2,32 @@
 
 declare(strict_types=1);
 
+use App\Core\Env;
+
+Env::load(
+    dirname(__DIR__) . '/.env'
+);
+
 return [
-    'host' => '127.0.0.1',
-    'port' => '3306',
-    'database' => 'portfolio',
-    'username' => 'root',
-    'password' => '',
+    'host' => Env::get(
+        'DB_HOST',
+        '127.0.0.1'
+    ),
+    'port' => Env::get(
+        'DB_PORT',
+        '3306'
+    ),
+    'database' => Env::get(
+        'DB_NAME',
+        'portfolio'
+    ),
+    'username' => Env::get(
+        'DB_USER',
+        'root'
+    ),
+    'password' => Env::get(
+        'DB_PASS',
+        ''
+    ),
     'charset' => 'utf8mb4',
 ];
