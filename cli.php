@@ -98,10 +98,26 @@ switch ($command) {
         echo "  admin:list    List administrator accounts\n";
         echo "  admin:password  Change the administrator password\n";
         echo "  admin:reset-password  Reset the administrator password\n";
+        echo "  db:test       Test the database connection\n";
         echo "  migrate       Run pending database migrations\n";
         echo "  migrate:create Create a new migration file\n";
         echo "  migrate:status  Show migration status\n";
         echo "  migrate:rollback Roll back the last migration batch\n";
+        exit(0);
+
+    case 'db:test':
+        try {
+            $database->connection()->query('SELECT 1');
+
+            echo "Database connection: OK\n";
+        } catch (PDOException $exception) {
+            cliError(
+                "Database connection: FAILED"
+            );
+
+            exit(1);
+        }
+
         exit(0);
 
     case 'admin:create':
