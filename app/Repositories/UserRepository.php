@@ -131,6 +131,24 @@ class UserRepository
         ]);
     }
 
+    public function resetAdminPassword(
+        string $email,
+        string $passwordHash
+    ): void {
+        $statement = $this->database->prepare(
+            'UPDATE users
+            SET password = :password
+            WHERE email = :email
+            AND role = :role'
+        );
+
+        $statement->execute([
+            'password' => $passwordHash,
+            'email' => $email,
+            'role' => 'admin',
+        ]);
+    }
+
     public function countAdmins(): int
     {
         $statement = $this->database->prepare(
