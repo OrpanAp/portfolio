@@ -322,6 +322,7 @@ $router->setDependency(
 $dashboardController = new DashboardController(
     $view,
     $auth,
+    $csrf,
     $appConfig['url']
 );
 
@@ -530,7 +531,7 @@ $router->post(
     ]
 );
 
-$router->get(
+$router->post(
     '/admin/logout',
     [
         AuthController::class,

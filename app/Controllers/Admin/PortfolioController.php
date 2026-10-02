@@ -983,6 +983,7 @@ class PortfolioController
             [
                 'title' => 'Portfolio Not Found',
                 'appUrl' => $this->appUrl,
+                'csrfField' => $this->csrf->field(),
             ],
             'layouts.admin'
         );

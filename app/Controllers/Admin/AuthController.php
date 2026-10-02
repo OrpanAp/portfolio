@@ -50,7 +50,7 @@ class AuthController
         if (!$this->csrf->verify($token)) {
             $this->response->send(
                 'Invalid CSRF token.',
-                419
+                403
             );
 
             exit;
@@ -108,6 +108,17 @@ class AuthController
 
     public function logout(): never
     {
+        $token = $this->request->post('_csrf');
+
+        if (!$this->csrf->verify($token)) {
+            $this->response->send(
+                'Invalid CSRF token.',
+                403
+            );
+
+            exit;
+        }
+
         $this->authService->logout();
 
         $this->response->redirect(

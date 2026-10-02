@@ -135,6 +135,7 @@ class TechnologyController
                 [
                     'title' => 'Technology Not Found',
                     'appUrl' => $this->appUrl,
+                    'csrfField' => $this->csrf->field(),
                 ],
                 'layouts.admin'
             );

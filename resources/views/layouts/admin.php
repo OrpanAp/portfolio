@@ -5,6 +5,7 @@
  * @var string $content
  * @var string $appUrl
  * @var array|null $user
+ * @var string $csrfField
  */
 ?>
 
@@ -103,12 +104,21 @@
                     View Website
                 </a>
 
-                <a
-                    href="<?= htmlspecialchars($appUrl) ?>/admin/logout"
-                    class="admin-nav-link admin-logout-link">
-                    Logout
-                </a>
+                <form
+                    method="POST"
+                    action="<?= htmlspecialchars($appUrl) ?>/admin/logout"
+                    style="margin: 0;">
 
+                    <button
+                        type="submit"
+                        class="admin-nav-link admin-logout-link"
+                        style="border: 0; background: none; width: 100%; text-align: left; cursor: pointer;">
+                        Logout
+                    </button>
+
+                    <?= $csrfField ?>
+
+                </form>
             </div>
 
         </aside>

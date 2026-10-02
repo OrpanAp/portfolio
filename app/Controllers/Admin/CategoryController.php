@@ -132,6 +132,7 @@ class CategoryController
                 [
                     'title' => 'Category Not Found',
                     'appUrl' => $this->appUrl,
+                    'csrfField' => $this->csrf->field(),
                 ],
                 'layouts.admin'
             );

@@ -6,12 +6,14 @@ namespace App\Controllers\Admin;
 
 use App\Core\Auth;
 use App\Core\View;
+use App\Core\Csrf;
 
 class DashboardController
 {
     public function __construct(
         private View $view,
         private Auth $auth,
+        private Csrf $csrf,
         private string $appUrl
     ) {}
 
@@ -25,6 +27,7 @@ class DashboardController
                 'title' => 'Admin Dashboard',
                 'appUrl' => $this->appUrl,
                 'user' => $user,
+                'csrfField' => $this->csrf->field(),
             ],
             'layouts.admin'
         );
