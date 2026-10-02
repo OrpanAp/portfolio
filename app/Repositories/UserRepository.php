@@ -91,6 +91,28 @@ class UserRepository
         return (int) $this->database->lastInsertId();
     }
 
+    public function findAdmins(): array
+    {
+        $statement = $this->database->prepare(
+            "SELECT
+                id,
+                username,
+                email,
+                role,
+                created_at,
+                updated_at
+             FROM users
+             WHERE role = :role
+             ORDER BY id ASC"
+        );
+
+        $statement->execute([
+            'role' => 'admin',
+        ]);
+
+        return $statement->fetchAll();
+    }
+
     public function countAdmins(): int
     {
         $statement = $this->database->prepare(

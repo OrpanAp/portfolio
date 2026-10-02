@@ -62,6 +62,7 @@ switch ($command) {
         echo "Available commands:\n";
         echo "  help          Show this help message\n";
         echo "  admin:create  Create the administrator account\n";
+        echo "  admin:list    List administrator accounts\n";
         exit(0);
 
     case 'admin:create':
@@ -132,6 +133,33 @@ switch ($command) {
                     . "\n"
             );
             exit(1);
+        }
+
+        exit(0);
+
+    case 'admin:list':
+        $userRepository = new App\Repositories\UserRepository(
+            $database->connection()
+        );
+
+        $admins = $userRepository->findAdmins();
+
+        if ($admins === []) {
+            echo "No administrator accounts found.\n";
+            exit(0);
+        }
+
+        echo "Administrator accounts:\n";
+        echo "\n";
+
+        foreach ($admins as $admin) {
+            echo "ID: {$admin['id']}\n";
+            echo "Username: {$admin['username']}\n";
+            echo "Email: {$admin['email']}\n";
+            echo "Role: {$admin['role']}\n";
+            echo "Created: {$admin['created_at']}\n";
+            echo "Updated: {$admin['updated_at']}\n";
+            echo "\n";
         }
 
         exit(0);
