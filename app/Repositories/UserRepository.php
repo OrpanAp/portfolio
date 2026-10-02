@@ -90,4 +90,19 @@ class UserRepository
 
         return (int) $this->database->lastInsertId();
     }
+
+    public function countAdmins(): int
+    {
+        $statement = $this->database->prepare(
+            "SELECT COUNT(*)
+             FROM users
+             WHERE role = :role"
+        );
+
+        $statement->execute([
+            'role' => 'admin',
+        ]);
+
+        return (int) $statement->fetchColumn();
+    }
 }
