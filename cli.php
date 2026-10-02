@@ -60,6 +60,16 @@ function cliSuccess(string $message): void
 
 $dbConfig = require __DIR__ . '/config/database.php';
 
+$databaseInstaller = new App\Core\DatabaseInstaller(
+    $dbConfig['host'],
+    $dbConfig['port'],
+    $dbConfig['database'],
+    $dbConfig['username'],
+    $dbConfig['password']
+);
+
+$databaseInstaller->createDatabaseIfMissing();
+
 $database = new App\Core\Database(
     $dbConfig['host'],
     $dbConfig['port'],
