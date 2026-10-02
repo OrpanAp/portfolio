@@ -289,7 +289,7 @@ class CategoryController
 
             $this->response->send(
                 'Invalid CSRF token.',
-                419
+                403
             );
 
             return false;
