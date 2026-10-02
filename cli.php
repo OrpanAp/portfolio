@@ -14,4 +14,26 @@ $database = new App\Core\Database(
     $dbConfig['password']
 );
 
-echo "CLI boot successful.\n";
+$command = $argv[1] ?? null;
+
+if ($command === null) {
+    echo "Portfolio CLI\n";
+    echo "Usage: php cli.php <command>\n";
+    exit(0);
+}
+
+switch ($command) {
+    case 'help':
+        echo "Portfolio CLI\n";
+        echo "\n";
+        echo "Available commands:\n";
+        echo "  help    Show this help message\n";
+        exit(0);
+
+    default:
+        fwrite(
+            STDERR,
+            "Unknown command: {$command}\n"
+        );
+        exit(1);
+}
