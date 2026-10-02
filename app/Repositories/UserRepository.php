@@ -113,6 +113,24 @@ class UserRepository
         return $statement->fetchAll();
     }
 
+    public function updatePassword(
+        int $id,
+        string $passwordHash
+    ): void {
+        $statement = $this->database->prepare(
+            'UPDATE users
+            SET password = :password
+            WHERE id = :id
+            AND role = :role'
+        );
+
+        $statement->execute([
+            'password' => $passwordHash,
+            'id' => $id,
+            'role' => 'admin',
+        ]);
+    }
+
     public function countAdmins(): int
     {
         $statement = $this->database->prepare(

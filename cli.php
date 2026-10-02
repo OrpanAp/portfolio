@@ -63,6 +63,7 @@ switch ($command) {
         echo "  help          Show this help message\n";
         echo "  admin:create  Create the administrator account\n";
         echo "  admin:list    List administrator accounts\n";
+        echo "  admin:password  Change the administrator password\n";
         exit(0);
 
     case 'admin:create':
@@ -160,6 +161,86 @@ switch ($command) {
             echo "Created: {$admin['created_at']}\n";
             echo "Updated: {$admin['updated_at']}\n";
             echo "\n";
+        }
+
+        exit(0);
+
+    case 'admin:password':
+        $userRepository = new App\Repositories\UserRepository(
+            $database->connection()
+        );
+
+        $admins = $userRepository->findAdmins();
+
+        if ($admins === []) {
+            fwrite(
+                STDERR,
+                "No administrator account found.\n"
+            );
+            exit(1);
+        }
+
+        if (count($admins) > 1) {
+            fwrite(
+                STDERR,
+                "Multiple administrator accounts found. Password change aborted.\n"
+            );
+            exit(1);
+        }
+
+        $admin = $admins[0];
+
+        $password = promptHidden('New password: ');
+        $passwordConfirmation = promptHidden(
+            'Confirm new password: '
+        );
+
+        if ($password === '') {
+            fwrite(STDERR, "\nPassword cannot be empty.\n");
+            exit(1);
+        }
+
+        if (strlen($password) < 8) {
+            fwrite(
+                STDERR,
+                "\nPassword must be at least 8 characters long.\n"
+            );
+            exit(1);
+        }
+
+        if ($password !== $passwordConfirmation) {
+            fwrite(
+                STDERR,
+                "\nPasswords do not match.\n"
+            );
+            exit(1);
+        }
+
+        $passwordHash = password_hash(
+            $password,
+            PASSWORD_DEFAULT
+        );
+
+        if ($passwordHash === false) {
+            fwrite(STDERR, "\nUnable to hash password.\n");
+            exit(1);
+        }
+
+        try {
+            $userRepository->updatePassword(
+                (int) $admin['id'],
+                $passwordHash
+            );
+
+            echo "\nAdministrator password updated successfully.\n";
+        } catch (PDOException $exception) {
+            fwrite(
+                STDERR,
+                "\nUnable to update administrator password: "
+                    . $exception->getMessage()
+                    . "\n"
+            );
+            exit(1);
         }
 
         exit(0);
