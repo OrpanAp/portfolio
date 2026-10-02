@@ -37,6 +37,27 @@ function promptHidden(string $prompt): string
     return rtrim($password, "\r\n");
 }
 
+function cliError(string $message): void
+{
+    $stderr = fopen('php://stderr', 'w');
+
+    if ($stderr === false) {
+        return;
+    }
+
+    fwrite(
+        $stderr,
+        "\033[31m{$message}\033[0m\n"
+    );
+
+    fclose($stderr);
+}
+
+function cliSuccess(string $message): void
+{
+    echo "\033[32m{$message}\033[0m\n";
+}
+
 $dbConfig = require __DIR__ . '/config/database.php';
 
 $database = new App\Core\Database(
@@ -52,6 +73,10 @@ $migrationRunner = new App\Core\MigrationRunner(
     new App\Repositories\MigrationRepository(
         $database->connection()
     ),
+    __DIR__ . '/database/migrations'
+);
+
+$migrationCreator = new App\Core\MigrationCreator(
     __DIR__ . '/database/migrations'
 );
 
@@ -74,7 +99,9 @@ switch ($command) {
         echo "  admin:password  Change the administrator password\n";
         echo "  admin:reset-password  Reset the administrator password\n";
         echo "  migrate       Run pending database migrations\n";
+        echo "  migrate:create Create a new migration file\n";
         echo "  migrate:status  Show migration status\n";
+        echo "  migrate:rollback Roll back the last migration batch\n";
         exit(0);
 
     case 'admin:create':
@@ -88,24 +115,26 @@ switch ($command) {
         $password = promptHidden('Password: ');
 
         if ($username === '') {
-            fwrite(STDERR, "\nUsername cannot be empty.\n");
+            cliError("\nUsername cannot be empty.");
             exit(1);
         }
 
-        if ($email === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            fwrite(STDERR, "\nPlease enter a valid email address.\n");
+        if (
+            $email === ''
+            || filter_var($email, FILTER_VALIDATE_EMAIL) === false
+        ) {
+            cliError("\nPlease enter a valid email address.");
             exit(1);
         }
 
         if ($password === '') {
-            fwrite(STDERR, "\nPassword cannot be empty.\n");
+            cliError("\nPassword cannot be empty.");
             exit(1);
         }
 
         if (strlen($password) < 8) {
-            fwrite(
-                STDERR,
-                "\nPassword must be at least 8 characters long.\n"
+            cliError(
+                "\nPassword must be at least 8 characters long."
             );
             exit(1);
         }
@@ -116,15 +145,14 @@ switch ($command) {
         );
 
         if ($passwordHash === false) {
-            fwrite(STDERR, "\nUnable to hash password.\n");
+            cliError("\nUnable to hash password.");
             exit(1);
         }
 
         try {
             if ($userRepository->countAdmins() > 0) {
-                fwrite(
-                    STDERR,
-                    "\nAn admin account already exists.\n"
+                cliError(
+                    "\nAn admin account already exists."
                 );
                 exit(1);
             }
@@ -135,14 +163,12 @@ switch ($command) {
                 $passwordHash
             );
 
-            echo "\nAdmin account created successfully.\n";
+            cliSuccess("\nAdmin account created successfully.");
             echo "Admin ID: {$userId}\n";
         } catch (PDOException $exception) {
-            fwrite(
-                STDERR,
+            cliError(
                 "\nUnable to create admin account: "
                     . $exception->getMessage()
-                    . "\n"
             );
             exit(1);
         }
@@ -184,17 +210,16 @@ switch ($command) {
         $admins = $userRepository->findAdmins();
 
         if ($admins === []) {
-            fwrite(
-                STDERR,
-                "No administrator account found.\n"
+            cliError(
+                "No administrator account found."
             );
             exit(1);
         }
 
         if (count($admins) > 1) {
-            fwrite(
-                STDERR,
-                "Multiple administrator accounts found. Password change aborted.\n"
+            cliError(
+                "Multiple administrator accounts found. "
+                    . "Password change aborted."
             );
             exit(1);
         }
@@ -207,23 +232,19 @@ switch ($command) {
         );
 
         if ($password === '') {
-            fwrite(STDERR, "\nPassword cannot be empty.\n");
+            cliError("\nPassword cannot be empty.");
             exit(1);
         }
 
         if (strlen($password) < 8) {
-            fwrite(
-                STDERR,
-                "\nPassword must be at least 8 characters long.\n"
+            cliError(
+                "\nPassword must be at least 8 characters long."
             );
             exit(1);
         }
 
         if ($password !== $passwordConfirmation) {
-            fwrite(
-                STDERR,
-                "\nPasswords do not match.\n"
-            );
+            cliError("\nPasswords do not match.");
             exit(1);
         }
 
@@ -233,7 +254,7 @@ switch ($command) {
         );
 
         if ($passwordHash === false) {
-            fwrite(STDERR, "\nUnable to hash password.\n");
+            cliError("\nUnable to hash password.");
             exit(1);
         }
 
@@ -243,13 +264,13 @@ switch ($command) {
                 $passwordHash
             );
 
-            echo "\nAdministrator password updated successfully.\n";
+            cliSuccess(
+                "\nAdministrator password updated successfully."
+            );
         } catch (PDOException $exception) {
-            fwrite(
-                STDERR,
+            cliError(
                 "\nUnable to update administrator password: "
                     . $exception->getMessage()
-                    . "\n"
             );
             exit(1);
         }
@@ -264,17 +285,16 @@ switch ($command) {
         $admins = $userRepository->findAdmins();
 
         if ($admins === []) {
-            fwrite(
-                STDERR,
-                "No administrator account found.\n"
+            cliError(
+                "No administrator account found."
             );
             exit(1);
         }
 
         if (count($admins) > 1) {
-            fwrite(
-                STDERR,
-                "Multiple administrator accounts found. Password reset aborted.\n"
+            cliError(
+                "Multiple administrator accounts found. "
+                    . "Password reset aborted."
             );
             exit(1);
         }
@@ -286,17 +306,15 @@ switch ($command) {
         $email = trim(readline('Admin email: '));
 
         if ($email === '') {
-            fwrite(
-                STDERR,
-                "Email cannot be empty.\n"
+            cliError(
+                "Email cannot be empty."
             );
             exit(1);
         }
 
         if (strcasecmp($email, $admin['email']) !== 0) {
-            fwrite(
-                STDERR,
-                "Administrator email does not match.\n"
+            cliError(
+                "Administrator email does not match."
             );
             exit(1);
         }
@@ -307,23 +325,19 @@ switch ($command) {
         );
 
         if ($password === '') {
-            fwrite(STDERR, "\nPassword cannot be empty.\n");
+            cliError("\nPassword cannot be empty.");
             exit(1);
         }
 
         if (strlen($password) < 8) {
-            fwrite(
-                STDERR,
-                "\nPassword must be at least 8 characters long.\n"
+            cliError(
+                "\nPassword must be at least 8 characters long."
             );
             exit(1);
         }
 
         if ($password !== $passwordConfirmation) {
-            fwrite(
-                STDERR,
-                "\nPasswords do not match.\n"
-            );
+            cliError("\nPasswords do not match.");
             exit(1);
         }
 
@@ -333,7 +347,7 @@ switch ($command) {
         );
 
         if ($passwordHash === false) {
-            fwrite(STDERR, "\nUnable to hash password.\n");
+            cliError("\nUnable to hash password.");
             exit(1);
         }
 
@@ -343,13 +357,13 @@ switch ($command) {
                 $passwordHash
             );
 
-            echo "\nAdministrator password reset successfully.\n";
+            cliSuccess(
+                "\nAdministrator password reset successfully."
+            );
         } catch (PDOException $exception) {
-            fwrite(
-                STDERR,
+            cliError(
                 "\nUnable to reset administrator password: "
                     . $exception->getMessage()
-                    . "\n"
             );
             exit(1);
         }
@@ -363,14 +377,44 @@ switch ($command) {
             if ($executed === 0) {
                 echo "No pending migrations.\n";
             } else {
-                echo "Migrations executed: {$executed}\n";
+                cliSuccess(
+                    "Migrations executed: {$executed}"
+                );
             }
         } catch (Throwable $exception) {
-            fwrite(
-                STDERR,
+            cliError(
                 "Migration failed: "
                     . $exception->getMessage()
-                    . "\n"
+            );
+
+            exit(1);
+        }
+
+        exit(0);
+
+    case 'migrate:create':
+        $migrationName = $argv[2] ?? '';
+
+        if (trim($migrationName) === '') {
+            cliError(
+                "Migration name is required."
+            );
+
+            exit(1);
+        }
+
+        try {
+            $migrationPath = $migrationCreator->create(
+                $migrationName
+            );
+
+            cliSuccess(
+                "Migration created: {$migrationPath}"
+            );
+        } catch (Throwable $exception) {
+            cliError(
+                "Migration creation failed: "
+                    . $exception->getMessage()
             );
 
             exit(1);
@@ -418,14 +462,14 @@ switch ($command) {
             if ($rolledBack === 0) {
                 echo "No migrations to roll back.\n";
             } else {
-                echo "Migrations rolled back: {$rolledBack}\n";
+                cliSuccess(
+                    "Migrations rolled back: {$rolledBack}"
+                );
             }
         } catch (Throwable $exception) {
-            fwrite(
-                STDERR,
+            cliError(
                 "Migration rollback failed: "
                     . $exception->getMessage()
-                    . "\n"
             );
 
             exit(1);
@@ -434,9 +478,9 @@ switch ($command) {
         exit(0);
 
     default:
-        fwrite(
-            STDERR,
-            "Unknown command: {$command}\n"
+        cliError(
+            "Unknown command: {$command}"
         );
+
         exit(1);
 }
