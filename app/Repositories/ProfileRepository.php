@@ -36,4 +36,38 @@ class ProfileRepository
 
         return $profile ?: null;
     }
+
+    public function update(
+        array $profile
+    ): void {
+        $statement = $this->database->prepare(
+            'UPDATE profile
+             SET
+                full_name = :full_name,
+                headline = :headline,
+                bio = :bio,
+                skills = :skills,
+                experience = :experience,
+                education = :education,
+                profile_image = :profile_image
+             WHERE id = 1'
+        );
+
+        $statement->execute([
+            'full_name' =>
+            $profile['full_name'] ?? '',
+            'headline' =>
+            $profile['headline'] ?? null,
+            'bio' =>
+            $profile['bio'] ?? null,
+            'skills' =>
+            $profile['skills'] ?? null,
+            'experience' =>
+            $profile['experience'] ?? null,
+            'education' =>
+            $profile['education'] ?? null,
+            'profile_image' =>
+            $profile['profile_image'] ?? null,
+        ]);
+    }
 }

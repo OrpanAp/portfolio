@@ -35,6 +35,8 @@ use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\CvController as AdminCvController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\PortfolioController as AdminPortfolioController;
+use App\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Controllers\Admin\SettingsController;
 use App\Controllers\Admin\TechnologyController;
 
 /*
@@ -68,6 +70,8 @@ use App\Services\AuthService;
 use App\Services\CvService;
 use App\Services\UploadService;
 use App\Services\IframeService;
+use App\Services\SettingsService;
+use App\Services\ProfileService;
 
 /*
 |--------------------------------------------------------------------------
@@ -220,6 +224,14 @@ $router->setDependency(
 $authService = new AuthService(
     $userRepository,
     $auth
+);
+
+$profileService = new ProfileService(
+    $profileRepository
+);
+
+$settingsService = new SettingsService(
+    $settingRepository
 );
 
 $uploadService = new UploadService(
@@ -408,6 +420,46 @@ $router->setDependency(
 );
 
 /*
+ * Profile
+ */
+
+$adminProfileController =
+    new AdminProfileController(
+        $view,
+        $request,
+        $response,
+        $csrf,
+        $profileService,
+        $uploadService,
+        $uploadConfig['profile_image_path'],
+        $uploadConfig['profile_image_max_file_size'],
+        $appConfig['url']
+    );
+
+$router->setDependency(
+    AdminProfileController::class,
+    $adminProfileController
+);
+
+/*
+ * Settings
+ */
+
+$settingsController = new SettingsController(
+    $view,
+    $request,
+    $response,
+    $csrf,
+    $settingsService,
+    $appConfig['url']
+);
+
+$router->setDependency(
+    SettingsController::class,
+    $settingsController
+);
+
+/*
 |--------------------------------------------------------------------------
 | Public Routes
 |--------------------------------------------------------------------------
@@ -586,6 +638,55 @@ $router->get(
     ],
     ['auth']
 );
+
+/*
+|--------------------------------------------------------------------------
+| Admin Profile Routes
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/admin/profile',
+    [
+        AdminProfileController::class,
+        'index',
+    ],
+    ['auth']
+);
+
+$router->post(
+    '/admin/profile',
+    [
+        AdminProfileController::class,
+        'update',
+    ],
+    ['auth']
+);
+
+/*
+|--------------------------------------------------------------------------
+| Admin Settings Routes
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/admin/settings',
+    [
+        SettingsController::class,
+        'index',
+    ],
+    ['auth']
+);
+
+$router->post(
+    '/admin/settings',
+    [
+        SettingsController::class,
+        'update',
+    ],
+    ['auth']
+);
+
 
 /*
 |--------------------------------------------------------------------------

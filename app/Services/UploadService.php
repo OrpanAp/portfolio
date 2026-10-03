@@ -244,6 +244,82 @@ class UploadService
         return 'uploads/thumbnails/' . $fileName;
     }
 
+    /**
+     * Upload a profile image.
+     *
+     * Returns the public relative path.
+     */
+    public function uploadProfileImage(
+        array $file,
+        string $profileImagePath,
+        int $maxFileSize = 5242880
+    ): string {
+        $this->validateProfileImageUpload(
+            $file,
+            $maxFileSize
+        );
+
+        if (!is_dir($profileImagePath)) {
+            if (!mkdir(
+                $profileImagePath,
+                0755,
+                true
+            ) && !is_dir($profileImagePath)) {
+                throw new RuntimeException(
+                    'Unable to create the profile image directory.'
+                );
+            }
+        }
+
+        $imageInfo = @getimagesize(
+            $file['tmp_name']
+        );
+
+        if (
+            $imageInfo === false ||
+            !isset($imageInfo['mime'])
+        ) {
+            throw new RuntimeException(
+                'The uploaded profile image is not valid.'
+            );
+        }
+
+        $extension = match ($imageInfo['mime']) {
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            default =>
+            throw new RuntimeException(
+                'The uploaded profile image format is not supported.'
+            ),
+        };
+
+        $fileName = 'profile_'
+            . bin2hex(
+                random_bytes(16)
+            )
+            . '.'
+            . $extension;
+
+        $destination = rtrim(
+            $profileImagePath,
+            DIRECTORY_SEPARATOR
+        )
+            . DIRECTORY_SEPARATOR
+            . $fileName;
+
+        if (!move_uploaded_file(
+            $file['tmp_name'],
+            $destination
+        )) {
+            throw new RuntimeException(
+                'Unable to save the profile image.'
+            );
+        }
+
+        return 'uploads/profile/' . $fileName;
+    }
+
     public function removeProject(
         string $projectFolder
     ): void {
@@ -457,6 +533,121 @@ class UploadService
         ) {
             throw new RuntimeException(
                 'The uploaded thumbnail format is not supported.'
+            );
+        }
+    }
+
+    /**
+     * Validate the uploaded profile image.
+     */
+    private function validateProfileImageUpload(
+        array $file,
+        int $maxFileSize
+    ): void {
+        if (
+            !isset(
+                $file['error'],
+                $file['tmp_name'],
+                $file['size'],
+                $file['name']
+            )
+        ) {
+            throw new RuntimeException(
+                'Invalid profile image upload data.'
+            );
+        }
+
+        if (
+            (int) $file['error']
+            !== UPLOAD_ERR_OK
+        ) {
+            throw new RuntimeException(
+                $this->uploadErrorMessage(
+                    (int) $file['error']
+                )
+            );
+        }
+
+        if (
+            !is_uploaded_file(
+                $file['tmp_name']
+            )
+        ) {
+            throw new RuntimeException(
+                'Invalid uploaded profile image.'
+            );
+        }
+
+        if (
+            (int) $file['size']
+            <= 0
+        ) {
+            throw new RuntimeException(
+                'The uploaded profile image is empty.'
+            );
+        }
+
+        if (
+            (int) $file['size']
+            > $maxFileSize
+        ) {
+            throw new RuntimeException(
+                'The profile image is too large.'
+            );
+        }
+
+        $extension = strtolower(
+            pathinfo(
+                $file['name'],
+                PATHINFO_EXTENSION
+            )
+        );
+
+        $allowedExtensions = [
+            'jpg',
+            'jpeg',
+            'png',
+            'webp',
+        ];
+
+        if (
+            !in_array(
+                $extension,
+                $allowedExtensions,
+                true
+            )
+        ) {
+            throw new RuntimeException(
+                'Only JPG, JPEG, PNG, and WebP profile images are allowed.'
+            );
+        }
+
+        $imageInfo = @getimagesize(
+            $file['tmp_name']
+        );
+
+        if ($imageInfo === false) {
+            throw new RuntimeException(
+                'The uploaded profile image is not a valid image.'
+            );
+        }
+
+        $allowedMimeTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+        ];
+
+        if (
+            !isset($imageInfo['mime'])
+            || !in_array(
+                $imageInfo['mime'],
+                $allowedMimeTypes,
+                true
+            )
+        ) {
+            throw new RuntimeException(
+                'The uploaded profile image format is not supported.'
             );
         }
     }
