@@ -3,7 +3,45 @@
 /**
  * @var string $title
  * @var string $appUrl
+ * @var array|null $profile
+ * @var string $siteTitle
+ * @var string $siteDescription
+ * @var array $featuredPortfolios
  */
+
+$headline =
+    trim(
+        (string) (
+            $profile['headline'] ?? ''
+        )
+    );
+
+$intro =
+    trim(
+        (string) (
+            $profile['bio'] ?? ''
+        )
+    );
+
+if ($headline === '') {
+    $headline = 'Software Developer';
+}
+
+if ($intro === '') {
+    $intro = $siteDescription !== ''
+        ? $siteDescription
+        : 'I build modern, responsive and user-friendly web applications using clean and maintainable code.';
+}
+
+$escape = static function (
+    mixed $value
+): string {
+    return htmlspecialchars(
+        (string) $value,
+        ENT_QUOTES,
+        'UTF-8'
+    );
+};
 ?>
 
 <section class="home-hero">
@@ -15,24 +53,23 @@
         </p>
 
         <h1>
-            I'm a Software Developer.
+            <?= $escape($headline) ?>
         </h1>
 
         <p class="home-intro">
-            I build modern, responsive and user-friendly
-            web applications using clean and maintainable code.
+            <?= $escape($intro) ?>
         </p>
 
         <div class="home-actions">
 
             <a
-                href="<?= htmlspecialchars($appUrl) ?>/portfolio"
+                href="<?= $escape($appUrl) ?>/portfolio"
                 class="home-button">
                 View My Work
             </a>
 
             <a
-                href="<?= htmlspecialchars($appUrl) ?>/profile"
+                href="<?= $escape($appUrl) ?>/profile"
                 class="home-button secondary">
                 About Me
             </a>
@@ -61,83 +98,114 @@
 
     </div>
 
-    <div class="featured-grid">
+    <?php if (
+        !empty($featuredPortfolios)
+    ): ?>
 
-        <article class="featured-card">
+        <div class="featured-carousel">
 
-            <div class="featured-card-image">
-                Project 01
+            <button
+                type="button"
+                class="featured-carousel-button previous"
+                aria-label="Previous featured project">
+                &#10094;
+            </button>
+
+            <div class="featured-carousel-viewport">
+
+                <div class="featured-carousel-track">
+
+                    <?php foreach (
+                        $featuredPortfolios
+                        as $portfolio
+                    ): ?>
+
+                        <article class="featured-card">
+
+                            <div class="featured-card-image">
+
+                                <?php if (
+                                    !empty($portfolio['thumbnail'])
+                                ): ?>
+
+                                    <img
+                                        src="<?= $escape(
+                                                    $appUrl . '/' .
+                                                        ltrim(
+                                                            (string) $portfolio['thumbnail'],
+                                                            '/'
+                                                        )
+                                                ) ?>"
+                                        alt="<?= $escape(
+                                                    $portfolio['title']
+                                                ) ?>">
+
+                                <?php else: ?>
+
+                                    <?= $escape(
+                                        $portfolio['title']
+                                    ) ?>
+
+                                <?php endif; ?>
+
+                            </div>
+
+                            <div class="featured-card-content">
+
+                                <h3>
+                                    <?= $escape(
+                                        $portfolio['title']
+                                    ) ?>
+                                </h3>
+
+                                <p>
+                                    <?= $escape(
+                                        $portfolio['description']
+                                    ) ?>
+                                </p>
+
+                                <a
+                                    href="<?= $escape(
+                                                $appUrl .
+                                                    '/portfolio/' .
+                                                    ltrim(
+                                                        (string) $portfolio['slug'],
+                                                        '/'
+                                                    )
+                                            ) ?>">
+                                    View Project
+                                </a>
+
+                            </div>
+
+                        </article>
+
+                    <?php endforeach; ?>
+
+                </div>
+
             </div>
 
-            <div class="featured-card-content">
+            <button
+                type="button"
+                class="featured-carousel-button next"
+                aria-label="Next featured project">
+                &#10095;
+            </button>
 
-                <h3>
-                    Project One
-                </h3>
+        </div>
 
-                <p>
-                    A short description of the project
-                    will appear here.
-                </p>
+        <div
+            class="featured-carousel-dots"
+            aria-label="Featured project navigation">
+        </div>
 
-                <a href="<?= htmlspecialchars($appUrl) ?>/portfolio">
-                    View Project
-                </a>
+    <?php else: ?>
 
-            </div>
+        <p class="featured-empty">
+            No featured projects are available yet.
+        </p>
 
-        </article>
-
-        <article class="featured-card">
-
-            <div class="featured-card-image">
-                Project 02
-            </div>
-
-            <div class="featured-card-content">
-
-                <h3>
-                    Project Two
-                </h3>
-
-                <p>
-                    A short description of the project
-                    will appear here.
-                </p>
-
-                <a href="<?= htmlspecialchars($appUrl) ?>/portfolio">
-                    View Project
-                </a>
-
-            </div>
-
-        </article>
-
-        <article class="featured-card">
-
-            <div class="featured-card-image">
-                Project 03
-            </div>
-
-            <div class="featured-card-content">
-
-                <h3>
-                    Project Three
-                </h3>
-
-                <p>
-                    A short description of the project
-                    will appear here.
-                </p>
-
-                <a href="<?= htmlspecialchars($appUrl) ?>/portfolio">
-                    View Project
-                </a>
-
-            </div>
-
-        </article>
-
-    </div>
+    <?php endif; ?>
 
 </section>

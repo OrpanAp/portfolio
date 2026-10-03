@@ -266,6 +266,23 @@ $router->setDependency(
 );
 
 /*
+ * Home
+ */
+
+$homeController = new HomeController(
+    $view,
+    $profileRepository,
+    $settingRepository,
+    $portfolioRepository,
+    $appConfig['url']
+);
+
+$router->setDependency(
+    HomeController::class,
+    $homeController
+);
+
+/*
  * Portfolio
  */
 
@@ -487,18 +504,16 @@ $router->get(
  * Home
  */
 
+/*
+ * Home
+ */
+
 $router->get(
     '/home',
-    function () use ($view, $appConfig) {
-
-        return $view->render(
-            'home.index',
-            [
-                'title' => 'Home - My Portfolio',
-                'appUrl' => $appConfig['url'],
-            ]
-        );
-    }
+    [
+        HomeController::class,
+        'index',
+    ]
 );
 
 /*
