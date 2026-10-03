@@ -18,6 +18,7 @@ use App\Core\Response;
 use App\Core\Router;
 use App\Core\Session;
 use App\Core\View;
+use App\Core\Env;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +80,9 @@ use App\Services\ProfileService;
 |--------------------------------------------------------------------------
 */
 
-$appConfig = require __DIR__ . '/../config/app.php';
+Env::load(__DIR__ . '/../.env');
+
+$appUrl = Env::get('APP_URL', '');
 
 $dbConfig = require __DIR__ . '/../config/database.php';
 
@@ -112,7 +115,7 @@ $csrf = new Csrf($session);
 $authMiddleware = new AuthMiddleware(
     $auth,
     $response,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setMiddleware(
@@ -257,7 +260,7 @@ $cvService = new CvService(
 $profileController = new ProfileController(
     $view,
     $profileRepository,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -274,7 +277,7 @@ $homeController = new HomeController(
     $profileRepository,
     $settingRepository,
     $portfolioRepository,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -291,9 +294,9 @@ $portfolioController = new PortfolioController(
     $portfolioRepository,
     $categoryRepository,
     $technologyRepository,
-    $appConfig['url'],
+    $appUrl,
     new IframeService(
-        $appConfig['url']
+        $appUrl
     )
 );
 
@@ -311,7 +314,7 @@ $cvController = new CvController(
     $response,
     $settingRepository,
     $cvService,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -336,7 +339,7 @@ $adminAuthController = new AuthController(
     $auth,
     $csrf,
     $authService,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -352,7 +355,7 @@ $dashboardController = new DashboardController(
     $view,
     $auth,
     $csrf,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -370,7 +373,7 @@ $categoryController = new CategoryController(
     $response,
     $csrf,
     $categoryRepository,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -388,7 +391,7 @@ $technologyController = new TechnologyController(
     $response,
     $csrf,
     $technologyRepository,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -409,7 +412,7 @@ $adminPortfolioController = new AdminPortfolioController(
     $categoryRepository,
     $technologyRepository,
     $uploadService,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -428,7 +431,7 @@ $adminCvController = new AdminCvController(
     $csrf,
     $cvService,
     $settingRepository,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -450,7 +453,7 @@ $adminProfileController =
         $uploadService,
         $uploadConfig['profile_image_path'],
         $uploadConfig['profile_image_max_file_size'],
-        $appConfig['url']
+        $appUrl
     );
 
 $router->setDependency(
@@ -468,7 +471,7 @@ $settingsController = new SettingsController(
     $response,
     $csrf,
     $settingsService,
-    $appConfig['url']
+    $appUrl
 );
 
 $router->setDependency(
@@ -488,13 +491,13 @@ $router->setDependency(
 
 $router->get(
     '/',
-    function () use ($view, $appConfig) {
+    function () use ($view, $appUrl) {
 
         return $view->render(
             'welcome.index',
             [
                 'title' => 'Welcome - My Portfolio',
-                'appUrl' => $appConfig['url'],
+                'appUrl' => $appUrl,
             ]
         );
     }
