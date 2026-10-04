@@ -37,9 +37,9 @@
                 type="button"
                 id="theme-toggle"
                 class="theme-toggle"
-                aria-label="Toggle dark and light theme"
+                aria-label="Switch to dark theme"
                 title="Toggle theme">
-                <span class="theme-toggle-icon" aria-hidden="true">◐</span>
+                <span class="theme-toggle-icon" aria-hidden="true">☼</span>
                 <span class="theme-toggle-label">Theme</span>
             </button>
         </div>
