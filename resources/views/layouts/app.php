@@ -9,14 +9,13 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
+
+    <meta name="color-scheme" content="light dark">
 
     <title><?= htmlspecialchars($title) ?></title>
 
@@ -29,22 +28,17 @@
     <link
         rel="stylesheet"
         href="<?= htmlspecialchars($appUrl) ?>/assets/css/responsive.css">
-
 </head>
 
 <body>
-
     <?php require __DIR__ . '/../components/navbar.php'; ?>
 
-    <main>
-
+    <main id="main-content">
         <?= $content ?>
-
     </main>
 
     <?php require __DIR__ . '/../components/footer.php'; ?>
 
     <script src="<?= htmlspecialchars($appUrl) ?>/assets/js/main.js"></script>
 </body>
-
 </html>
