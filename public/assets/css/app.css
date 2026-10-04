@@ -1,0 +1,161 @@
+:root {
+    --bs-body-bg: #f7f8fc;
+    --bs-body-color: #172033;
+    --site-surface: #ffffff;
+    --site-surface-soft: #f0f3f8;
+    --site-border: #e2e7ef;
+    --site-muted: #667085;
+    --site-primary: #635bff;
+    --site-primary-hover: #5148e5;
+    --site-shadow: 0 1rem 3rem rgba(16, 24, 40, 0.08);
+    --site-radius: 1.25rem;
+}
+
+html[data-theme="dark"] {
+    --bs-body-bg: #0b1020;
+    --bs-body-color: #eef2ff;
+    --site-surface: #121a2b;
+    --site-surface-soft: #192238;
+    --site-border: #29344b;
+    --site-muted: #9aa6bd;
+    --site-primary: #8b83ff;
+    --site-primary-hover: #a29cff;
+    --site-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.28);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    min-height: 100vh;
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a { color: inherit; }
+
+.site-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.site-main { flex: 1; }
+
+.site-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background: color-mix(in srgb, var(--site-surface) 90%, transparent);
+    border-bottom: 1px solid var(--site-border);
+    backdrop-filter: blur(16px);
+}
+
+.navbar-brand-mark {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 0.75rem;
+    background: var(--site-primary);
+    color: #fff;
+    font-weight: 800;
+}
+
+.site-nav-link {
+    color: var(--site-muted);
+    font-weight: 600;
+    border-radius: 0.75rem;
+    padding: 0.55rem 0.8rem !important;
+}
+
+.site-nav-link:hover,
+.site-nav-link:focus-visible {
+    color: var(--bs-body-color);
+    background: var(--site-surface-soft);
+}
+
+.theme-toggle {
+    border: 1px solid var(--site-border);
+    background: var(--site-surface);
+    color: var(--bs-body-color);
+    border-radius: 0.75rem;
+    min-width: 2.75rem;
+    min-height: 2.5rem;
+}
+
+.theme-toggle:hover { background: var(--site-surface-soft); }
+
+.site-content {
+    width: min(1180px, calc(100% - 2rem));
+    margin-inline: auto;
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+}
+
+.site-footer {
+    border-top: 1px solid var(--site-border);
+    background: var(--site-surface);
+    color: var(--site-muted);
+}
+
+.site-surface {
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
+    border-radius: var(--site-radius);
+    box-shadow: var(--site-shadow);
+}
+
+.site-muted { color: var(--site-muted) !important; }
+
+.btn-site-primary {
+    --bs-btn-bg: var(--site-primary);
+    --bs-btn-border-color: var(--site-primary);
+    --bs-btn-hover-bg: var(--site-primary-hover);
+    --bs-btn-hover-border-color: var(--site-primary-hover);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+}
+
+.btn-site-secondary {
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
+    color: var(--bs-body-color);
+}
+
+.btn-site-secondary:hover {
+    background: var(--site-surface-soft);
+    border-color: var(--site-border);
+    color: var(--bs-body-color);
+}
+
+.form-control,
+.form-select {
+    background-color: var(--site-surface);
+    border-color: var(--site-border);
+    color: var(--bs-body-color);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--site-surface);
+    color: var(--bs-body-color);
+    border-color: var(--site-primary);
+    box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--site-primary) 18%, transparent);
+}
+
+.form-control::placeholder { color: var(--site-muted); }
+
+.badge-site {
+    background: var(--site-surface-soft);
+    border: 1px solid var(--site-border);
+    color: var(--bs-body-color);
+}
+
+:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--site-primary) 45%, transparent);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
