@@ -7,11 +7,11 @@
  */
 ?>
 
-<section class="portfolio-detail">
+<section class="portfolio-detail page-transition">
 
     <?php if ($portfolio === null): ?>
 
-        <div class="portfolio-detail-not-found">
+        <div class="portfolio-detail-not-found empty-state" data-reveal>
 
             <h1>
                 Project Not Found
@@ -34,11 +34,12 @@
 
         <a
             href="<?= htmlspecialchars($appUrl) ?>/portfolio"
-            class="portfolio-back">
+            class="portfolio-back"
+            data-reveal>
             ← Back to Portfolio
         </a>
 
-        <header class="portfolio-detail-header">
+        <header class="portfolio-detail-header" data-reveal>
 
             <?php if (!empty($portfolio['is_featured'])): ?>
 
@@ -63,18 +64,19 @@
         </header>
 
         <?php if (!empty($portfolio['thumbnail'])): ?>
-            <div class="portfolio-detail-thumbnail">
+            <div class="portfolio-detail-thumbnail" data-reveal>
+                <div class="skeleton skeleton-media" aria-hidden="true"></div>
                 <img
                     src="<?= htmlspecialchars(
                                 rtrim($appUrl, '/')
                                     . '/'
                                     . ltrim($portfolio['thumbnail'], '/')
                             ) ?>"
-                    alt="<?= htmlspecialchars($portfolio['title']) ?>">
+                    alt="<?= htmlspecialchars($portfolio['title']) ?>" loading="eager" decoding="async">
             </div>
         <?php endif; ?>
 
-        <div class="portfolio-detail-info">
+        <div class="portfolio-detail-info" data-reveal>
 
             <div>
 
@@ -119,7 +121,7 @@
 
         <?php if (!empty($previewUrl)): ?>
 
-            <section class="portfolio-live-preview">
+            <section class="portfolio-live-preview" data-reveal>
 
                 <div class="portfolio-live-preview-header">
 
@@ -138,6 +140,12 @@
                 </div>
 
                 <div class="portfolio-live-preview-frame">
+                    <div class="preview-chrome" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                        <small>Live project preview</small>
+                        <button type="button" class="preview-expand" data-iframe-fullscreen aria-label="Expand live project preview">Expand</button>
+                    </div>
+                    <div class="skeleton skeleton-iframe" aria-hidden="true"></div>
 
                     <iframe
                         src="<?= htmlspecialchars($previewUrl) ?>"

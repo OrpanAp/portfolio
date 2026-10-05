@@ -44,9 +44,9 @@ $total =
     $total ?? 0;
 ?>
 
-<section class="portfolio-page">
+<section class="portfolio-page page-transition">
 
-    <header class="portfolio-header">
+    <header class="portfolio-header" data-reveal>
 
         <p class="portfolio-eyebrow">
             My Work
@@ -85,7 +85,7 @@ $total =
     <form
         method="GET"
         action="<?= htmlspecialchars($appUrl) ?>/portfolio"
-        class="portfolio-filters">
+        class="portfolio-filters" data-reveal>
 
         <div class="portfolio-filter-group">
 
@@ -245,7 +245,7 @@ $total =
 
     </form>
 
-    <div class="portfolio-result-count">
+    <div class="portfolio-result-count" data-reveal>
 
         <?php if ($total === 1): ?>
 
@@ -261,7 +261,7 @@ $total =
 
     <?php if (empty($portfolios)): ?>
 
-        <div class="portfolio-empty">
+        <div class="portfolio-empty empty-state" data-reveal>
 
             <h2>
                 No Projects Found
@@ -279,7 +279,7 @@ $total =
 
             <?php foreach ($portfolios as $portfolio): ?>
 
-                <article class="portfolio-card">
+                <article class="portfolio-card" data-reveal>
 
                     <?php if (!empty($portfolio['is_featured'])): ?>
 
@@ -291,17 +291,19 @@ $total =
 
                     <?php if (!empty($portfolio['thumbnail'])): ?>
 
+                        <div class="portfolio-card-media"><div class="skeleton skeleton-media" aria-hidden="true"></div>
                         <img
                             src="<?= htmlspecialchars($portfolio['thumbnail']) ?>"
                             alt="<?= htmlspecialchars($portfolio['title']) ?>"
-                            class="portfolio-thumbnail">
+                            class="portfolio-thumbnail" loading="lazy" decoding="async">
+                        </div>
 
                     <?php else: ?>
 
-                        <div class="portfolio-thumbnail-placeholder">
-                            <?= htmlspecialchars(
-                                $portfolio['title']
-                            ) ?>
+                        <div class="portfolio-card-media">
+                            <div class="portfolio-thumbnail-placeholder">
+                                <?= htmlspecialchars($portfolio['title']) ?>
+                            </div>
                         </div>
 
                     <?php endif; ?>
@@ -368,6 +370,7 @@ $total =
 
             <nav
                 class="portfolio-pagination"
+                data-reveal
                 aria-label="Portfolio pagination">
 
                 <?php if ($page > 1): ?>
