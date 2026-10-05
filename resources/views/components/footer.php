@@ -3,7 +3,7 @@
     <div class="footer-container">
 
         <div class="footer-brand">
-            <a href="<?= htmlspecialchars($appUrl) ?>/" class="footer-logo">My Portfolio</a>
+            <a href="<?= htmlspecialchars($appUrl) ?>/" class="footer-logo">Alex Purification</a>
             <p>A focused collection of thoughtful digital work.</p>
         </div>
 
@@ -21,7 +21,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; <?= date('Y') ?> My Portfolio. All rights reserved.</p>
+            <p>&copy; <?= date('Y') ?> Alex Purification. All rights reserved.</p>
             <span>Designed &amp; built with intention.</span>
         </div>
 

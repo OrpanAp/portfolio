@@ -15,8 +15,8 @@
                 href="<?= htmlspecialchars($appUrl) ?>/"
                 class="navbar-logo"
                 aria-label="My Portfolio home">
-                <span class="navbar-logo-mark" aria-hidden="true">M</span>
-                <span class="navbar-logo-text">My Portfolio</span>
+                <span class="navbar-logo-mark" aria-hidden="true">AP</span>
+                <span class="navbar-logo-text">Alex Purification</span>
             </a>
 
             <button
