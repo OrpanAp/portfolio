@@ -30,27 +30,12 @@
                 </strong>
             </p>
 
-            <div
-                style="
-                    width: 100%;
-                    height: 700px;
-                    margin-top: 20px;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    overflow: hidden;
-                ">
-
+            <div class="admin-cv-preview">
                 <iframe
                     src="<?= htmlspecialchars(
                                 $appUrl . '/cv/preview'
                             ) ?>"
-                    title="CV Preview"
-                    style="
-                        width: 100%;
-                        height: 100%;
-                        border: 0;
-                    "></iframe>
-
+                    title="CV Preview"></iframe>
             </div>
 
             <p style="margin-top: 15px;">

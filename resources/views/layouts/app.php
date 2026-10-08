@@ -24,6 +24,7 @@
 
     <!-- Runs before first paint so the persisted/system theme does not flash. -->
     <script src="<?= htmlspecialchars($appUrl) ?>/assets/js/theme.js"></script>
+    <script>document.documentElement.classList.add("js");</script>
 
     <link
         rel="stylesheet"

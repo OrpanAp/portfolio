@@ -68,6 +68,7 @@
   .site-header.menu-open .navbar-menu-toggle span:nth-child(3) {
     transform: translateY(-6px) rotate(-45deg);
   }
+<<<<<<< HEAD
   .navbar-links {
     position: fixed;
     top: 0;
@@ -148,6 +149,64 @@
     visibility: visible;
   }
 
+=======
+
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: calc(var(--z-drawer) - 1);
+    width: min(360px, 88vw);
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 6rem 2rem 2rem;
+    background: var(--color-surface);
+    border-left: 1px solid var(--color-border);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(105%);
+    transition: transform 0.5s var(--ease-standard);
+  }
+  .site-header.menu-open .navbar-links {
+    transform: none;
+  }
+  .navbar-links > a {
+    padding: 0.9rem 1rem;
+    font-size: 1.05rem;
+    border-radius: 0.8rem;
+  }
+  .navbar-links > a:hover {
+    background: var(--color-surface-soft);
+  }
+  .navbar-links > a::after {
+    display: none;
+  }
+  .theme-toggle {
+    justify-content: center;
+    margin: 0.75rem 0 0;
+  }
+  .navbar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) - 2);
+    display: block;
+    background: color-mix(in srgb, var(--color-bg) 65%, transparent);
+    opacity: 0;
+    visibility: hidden;
+    backdrop-filter: blur(3px);
+    transition:
+      opacity var(--duration),
+      visibility var(--duration);
+  }
+  .site-header.menu-open .navbar-backdrop {
+    opacity: 1;
+    visibility: visible;
+  }
+
+>>>>>>> 9029ca2 (Responsive view fix)
   .section-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -380,4 +439,388 @@
     width: 34px;
     height: 34px;
   }
+<<<<<<< HEAD
+=======
+}
+
+/* ==========================================================================
+   Featured carousel — responsive precision pass
+   Keeps the existing markup/hooks while making card geometry viewport-driven.
+   ========================================================================== */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
+body.menu-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.featured-carousel {
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: clamp(40px, 3.2vw, 50px) minmax(0, 1fr) clamp(
+      40px,
+      3.2vw,
+      50px
+    );
+  gap: clamp(0.65rem, 1.25vw, 1.15rem);
+}
+
+.featured-carousel-viewport {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: calc(var(--radius-lg) + 2px);
+  touch-action: pan-y pinch-zoom;
+  overscroll-behavior-x: contain;
+}
+
+.featured-carousel-track {
+  --featured-card-gap: clamp(0.75rem, 1.25vw, 1.15rem);
+  --featured-visible-count: 3;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(
+    --featured-card-width,
+    calc(
+      (
+          100% -
+            (var(--featured-card-gap) * (var(--featured-visible-count) - 1))
+        ) /
+        var(--featured-visible-count)
+    )
+  );
+  gap: var(--featured-card-gap);
+  width: max-content;
+  min-width: 100%;
+  will-change: transform;
+  transition: transform var(--duration-slow) var(--ease-standard);
+}
+
+.featured-card {
+  width: var(--featured-card-width);
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: clamp(1rem, 1.5vw, 1.35rem);
+  isolation: isolate;
+}
+
+.featured-card-image {
+  flex: 0 0 auto;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  min-height: 0;
+}
+
+.featured-card-image img {
+  transition: transform 0.8s var(--ease-standard);
+}
+
+.featured-card-content {
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: clamp(1.05rem, 1.8vw, 1.5rem);
+}
+
+.featured-card h3 {
+  max-width: 100%;
+  margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  overflow-wrap: anywhere;
+}
+
+.featured-card p {
+  max-width: 100%;
+  margin-bottom: 1rem;
+  font-size: clamp(0.84rem, 1vw, 0.94rem);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.featured-card .text-link {
+  min-height: 44px;
+  padding: 0.5rem 0;
+}
+
+.featured-carousel-button {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  width: clamp(40px, 3.2vw, 50px);
+  height: clamp(40px, 3.2vw, 50px);
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.featured-carousel-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.featured-carousel-dots {
+  min-height: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-inline: 0.5rem;
+}
+
+.featured-carousel-dot {
+  min-width: 8px;
+  min-height: 8px;
+}
+
+/* Tablet: two comfortable cards, still using the same measured geometry. */
+@media (max-width: 1023px) {
+  .featured-carousel-track {
+    --featured-visible-count: 2;
+  }
+
+  .featured-card-image {
+    aspect-ratio: 15 / 9;
+  }
+}
+
+/* Phone: one complete card per movement. No partial cards and no page scroller. */
+@media (max-width: 767px) {
+  .featured-carousel {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 0.55rem;
+  }
+
+  .featured-carousel-track {
+    --featured-visible-count: 1;
+    --featured-card-gap: 0.75rem;
+  }
+
+  .featured-card {
+    width: var(--featured-card-width);
+  }
+
+  .featured-card-image {
+    aspect-ratio: 16 / 9;
+  }
+
+  .featured-card-content {
+    padding: 1.15rem;
+  }
+
+  .featured-card h3 {
+    font-size: clamp(1.25rem, 6vw, 1.55rem);
+  }
+
+  .featured-card p {
+    font-size: 0.9rem;
+  }
+
+  .featured-carousel-button {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Small phones: reclaim a little more width for the actual card. */
+@media (max-width: 479px) {
+  .featured-carousel {
+    grid-template-columns: 38px minmax(0, 1fr) 38px;
+    gap: 0.45rem;
+  }
+
+  .featured-carousel-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .featured-carousel-button svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .featured-card-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .featured-carousel {
+    grid-template-columns: 34px minmax(0, 1fr) 34px;
+  }
+
+  .featured-carousel-button {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+}
+
+/* Mobile navigation: smoother drawer, stable viewport, and accessible motion. */
+@media (max-width: 820px) {
+  .navbar-links {
+    width: min(390px, calc(100vw - 24px));
+    padding: max(5.5rem, calc(var(--nav-height) + 2.5rem))
+      max(1.25rem, env(safe-area-inset-right))
+      max(1.5rem, env(safe-area-inset-bottom))
+      max(1.25rem, env(safe-area-inset-left));
+    border-radius: 1.5rem 0 0 1.5rem;
+    transform: translate3d(105%, 0, 0);
+    transition:
+      transform 0.45s var(--ease-standard),
+      box-shadow 0.45s var(--ease-standard);
+    will-change: transform;
+  }
+
+  .site-header.menu-open .navbar-links {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .navbar-backdrop {
+    background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  .navbar-menu-toggle {
+    overflow: visible;
+  }
+
+  .navbar-menu-toggle span {
+    transform-origin: center;
+  }
+}
+
+/* Never allow decorative full-bleed sections to create a viewport-width scrollbar. */
+.welcome-page {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Stable mobile drawer: anchor it to the visual viewport and prevent
+   scrollbar/body-lock changes from moving the navigation underneath it. */
+html {
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 820px) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    height: var(--nav-height);
+  }
+
+  .navbar-links {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(390px, calc(100vw - 24px));
+    height: 100vh;
+    max-height: 100dvh;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(105%, 0, 0);
+  }
+
+  .site-header.menu-open .navbar-links {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .navbar-backdrop {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
+/* JS measures the carousel before its first visible frame. No-JS users still
+   receive the normal CSS layout because the html.js class is JS-only. */
+html.js .featured-carousel:not(.is-ready) .featured-carousel-track {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .featured-carousel:not(.is-ready) .featured-carousel-track {
+    visibility: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured-carousel-track,
+  .navbar-links,
+  .navbar-menu-toggle span {
+    transition: none;
+  }
+
+  .featured-card,
+  .featured-card-image img {
+    transition: none;
+  }
+}
+
+
+/* ==========================================================================
+   Mobile menu fix: header must stay visible while the drawer is open
+   --------------------------------------------------------------------------
+   1. Scroll lock lives on <html>. Putting overflow:hidden on <body> (while
+      <html> has overflow-x:clip) turned <body> into the sticky header's
+      scroll container, so the header scrolled away with the page.
+   2. backdrop-filter on .site-navbar created a containing block for the
+      position:fixed drawer/backdrop. The blur is moved to a pseudo-element.
+   ========================================================================== */
+html.menu-lock {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.menu-open {
+  overflow: visible;      /* override the earlier overflow:hidden */
+  overflow-x: clip;
+}
+
+@media (max-width: 820px) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-navbar);
+  }
+
+  .site-navbar {
+    position: relative;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: transparent;
+  }
+
+  .site-navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-surface-glass);
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+    backdrop-filter: blur(var(--blur-glass));
+    pointer-events: none;
+  }
+
+  /* Keep the toggle above the drawer/backdrop (it already has z-drawer) */
+  .navbar-menu-toggle {
+    position: relative;
+    z-index: var(--z-drawer);
+  }
+>>>>>>> 9029ca2 (Responsive view fix)
 }

@@ -18,7 +18,7 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>
         <?= htmlspecialchars($title) ?>
@@ -38,7 +38,7 @@
 
     <div class="admin-layout">
 
-        <aside class="admin-sidebar">
+        <aside class="admin-sidebar" id="admin-sidebar">
 
             <div class="admin-sidebar-header">
 
@@ -47,6 +47,14 @@
                     class="admin-logo">
                     Admin Panel
                 </a>
+
+                <button
+                    type="button"
+                    class="admin-sidebar-close"
+                    data-admin-menu-close
+                    aria-label="Close admin navigation">
+                    &times;
+                </button>
 
             </div>
 
@@ -123,15 +131,33 @@
 
         </aside>
 
+        <div class="admin-sidebar-backdrop" data-admin-menu-close></div>
+
         <div class="admin-main">
 
             <header class="admin-topbar">
 
-                <div>
+                <div class="admin-topbar-left">
+
+                    <button
+                        type="button"
+                        class="admin-mobile-menu-toggle"
+                        data-admin-menu-toggle
+                        aria-label="Open admin navigation"
+                        aria-controls="admin-sidebar"
+                        aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                    <div>
 
                     <h1>
                         <?= htmlspecialchars($title) ?>
                     </h1>
+
+                    </div>
 
                 </div>
 
@@ -156,6 +182,8 @@
         </div>
 
     </div>
+
+    <script src="<?= htmlspecialchars($appUrl) ?>/assets/js/admin.js"></script>
 
 </body>
 
