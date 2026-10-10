@@ -44,6 +44,31 @@ class SettingsService
     }
 
     /**
+     * Settings exposed to every public page (title, description, socials),
+     * with safe fallbacks when a value is empty.
+     */
+    public function getPublicSettings(): array
+    {
+        $settings = $this->getEditableSettings();
+
+        if (trim($settings['site_title']) === '') {
+            $settings['site_title'] = 'My Portfolio';
+        }
+
+        return [
+            'siteTitle' => $settings['site_title'],
+            'siteDescription' => $settings['site_description'],
+            'socialLinks' => array_filter([
+                'GitHub' => $settings['github_url'],
+                'LinkedIn' => $settings['linkedin_url'],
+                'Facebook' => $settings['facebook_url'],
+                'Instagram' => $settings['instagram_url'],
+                'Twitter / X' => $settings['twitter_url'],
+            ], static fn (string $url): bool => $url !== ''),
+        ];
+    }
+
+    /**
      * Save all editable settings.
      */
     public function saveSettings(

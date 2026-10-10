@@ -7,6 +7,7 @@
  * @var string $siteTitle
  * @var string $siteDescription
  * @var array $featuredPortfolios
+ * @var array<string, string> $socialLinks
  */
 
 $headline = trim((string) ($profile['headline'] ?? ''));
@@ -34,7 +35,7 @@ $escape = static function (mixed $value): string {
         <div class="home-hero-glow home-hero-glow-two" aria-hidden="true"></div>
 
         <div class="home-hero-content" data-reveal>
-            <p class="home-eyebrow"><span class="eyebrow-dot"></span> Welcome to my portfolio</p>
+            <p class="home-eyebrow"><span class="eyebrow-dot"></span> Welcome to <?= $escape($siteTitle !== '' ? $siteTitle : 'my portfolio') ?></p>
 
             <h1>
                 <?= $escape($headline) ?>
@@ -54,6 +55,16 @@ $escape = static function (mixed $value): string {
                     About Me
                 </a>
             </div>
+
+            <?php if (!empty($socialLinks)): ?>
+                <div class="home-social">
+                    <p class="home-social-label">Find me online</p>
+                    <?php
+                    $socialVariant = 'hero';
+                    require __DIR__ . '/../components/social-links.php';
+                    ?>
+                </div>
+            <?php endif; ?>
 
             <div class="home-trust-row">
                 <span>Clean architecture</span>

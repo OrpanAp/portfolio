@@ -82,7 +82,7 @@ class HomeController
                 'title' =>
                 $siteTitle !== ''
                     ? $siteTitle
-                    : 'Home - My Portfolio',
+                    : 'Home',
 
                 'appUrl' =>
                 $this->appUrl,

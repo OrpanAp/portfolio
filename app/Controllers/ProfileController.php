@@ -22,7 +22,7 @@ class ProfileController
         return $this->view->render(
             'profile.index',
             [
-                'title' => 'Profile - My Portfolio',
+                'title' => 'Profile',
                 'appUrl' => $this->appUrl,
                 'profile' => $profile,
             ]

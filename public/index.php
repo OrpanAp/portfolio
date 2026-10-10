@@ -237,6 +237,12 @@ $settingsService = new SettingsService(
     $settingRepository
 );
 
+// Make admin settings available to every public page (title, meta, footer).
+$view->shareWithLayout(
+    'layouts.app',
+    static fn (): array => $settingsService->getPublicSettings()
+);
+
 $uploadService = new UploadService(
     $uploadConfig['projects_path'],
     $uploadConfig['max_file_size']
@@ -496,7 +502,7 @@ $router->get(
         return $view->render(
             'welcome.index',
             [
-                'title' => 'Welcome - My Portfolio',
+                'title' => 'Welcome',
                 'appUrl' => $appUrl,
             ]
         );

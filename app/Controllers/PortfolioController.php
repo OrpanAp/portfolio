@@ -102,7 +102,7 @@ class PortfolioController
             'portfolio.index',
             [
                 'title' =>
-                'Portfolio - My Portfolio',
+                'Portfolio',
 
                 'appUrl' =>
                 $this->appUrl,
@@ -173,8 +173,7 @@ class PortfolioController
             'portfolio.show',
             [
                 'title' =>
-                $portfolio['title']
-                    . ' - My Portfolio',
+                $portfolio['title'],
 
                 'appUrl' =>
                 $this->appUrl,

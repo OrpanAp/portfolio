@@ -8,18 +8,37 @@ use RuntimeException;
 
 class View
 {
+    /** @var array<string, callable> */
+    private array $layoutData = [];
+
     public function __construct(
         private string $viewsPath
     ) {}
+
+    /**
+     * Register a resolver whose returned array is merged into the data
+     * of the given layout (and its components) on every render.
+     * Page data with the same key wins.
+     */
+    public function shareWithLayout(
+        string $layout,
+        callable $resolver
+    ): void {
+        $this->layoutData[$layout] = $resolver;
+    }
 
     public function render(
         string $view,
         array $data = [],
         ?string $layout = 'layouts.app'
     ): string {
+        $shared = ($layout !== null && isset($this->layoutData[$layout]))
+            ? ($this->layoutData[$layout])()
+            : [];
+
         $content = $this->renderFile(
             $view,
-            $data
+            [...$shared, ...$data]
         );
 
         if ($layout === null) {
@@ -29,6 +48,7 @@ class View
         return $this->renderFile(
             $layout,
             [
+                ...$shared,
                 ...$data,
                 'content' => $content,
             ]

@@ -4,7 +4,17 @@
  * @var string $title
  * @var string $content
  * @var string $appUrl
+ * @var string $siteTitle
+ * @var string $siteDescription
  */
+
+$siteTitle = trim((string) ($siteTitle ?? '')) ?: 'My Portfolio';
+$siteDescription = trim((string) ($siteDescription ?? ''));
+$pageTitle = trim((string) $title);
+
+$fullTitle = ($pageTitle === '' || $pageTitle === $siteTitle)
+    ? $siteTitle
+    : $pageTitle . ' - ' . $siteTitle;
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +30,14 @@
 
     <meta name="theme-color" content="#0b0d12">
 
-    <title><?= htmlspecialchars($title) ?></title>
+    <title><?= htmlspecialchars($fullTitle) ?></title>
+
+    <?php if ($siteDescription !== ''): ?>
+        <meta name="description" content="<?= htmlspecialchars($siteDescription, ENT_QUOTES, 'UTF-8') ?>">
+        <meta property="og:description" content="<?= htmlspecialchars($siteDescription, ENT_QUOTES, 'UTF-8') ?>">
+    <?php endif; ?>
+    <meta property="og:title" content="<?= htmlspecialchars($fullTitle, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:site_name" content="<?= htmlspecialchars($siteTitle, ENT_QUOTES, 'UTF-8') ?>">
 
     <!-- Runs before first paint so the persisted/system theme does not flash. -->
     <script src="<?= htmlspecialchars($appUrl) ?>/assets/js/theme.js"></script>

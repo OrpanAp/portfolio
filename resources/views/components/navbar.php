@@ -2,7 +2,18 @@
 
 /**
  * @var string $appUrl
+ * @var string $siteTitle
  */
+
+$navTitle = trim((string) ($siteTitle ?? '')) ?: 'My Portfolio';
+$navMark = mb_strtoupper(mb_substr(
+    implode('', array_map(
+        static fn (string $w): string => mb_substr($w, 0, 1),
+        array_slice(preg_split('/\s+/u', $navTitle) ?: [], 0, 2)
+    )),
+    0,
+    2
+));
 ?>
 
 <header class="site-header">
@@ -14,9 +25,9 @@
             <a
                 href="<?= htmlspecialchars($appUrl) ?>/"
                 class="navbar-logo"
-                aria-label="My Portfolio home">
-                <span class="navbar-logo-mark" aria-hidden="true">AP</span>
-                <span class="navbar-logo-text">Alex Purification</span>
+                aria-label="<?= htmlspecialchars($navTitle, ENT_QUOTES, 'UTF-8') ?> home">
+                <span class="navbar-logo-mark" aria-hidden="true"><?= htmlspecialchars($navMark, ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="navbar-logo-text"><?= htmlspecialchars($navTitle, ENT_QUOTES, 'UTF-8') ?></span>
             </a>
 
             <button
